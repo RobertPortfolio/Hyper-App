@@ -1,0 +1,45 @@
+.custom-button {
+    width: 100%; /* Растягивается на всю ширину */
+    padding: 8px; /* Внутренние отступы */
+    margin: 4px 2px; /* Отступы между кнопками */
+    border: 1px solid #3a3f4c; /* Граница кнопки */
+    font-size: 1rem; /* Размер текста */
+    font-weight: 500; /* Жирность текста */
+    background-color: #2c313d; /* Тёмный фон с синеватым оттенком */
+    color: #d1d1d1; /* Светлый текст */
+    cursor: pointer; /* Указатель мыши */
+    transition: all 0.3s ease; /* Анимация при наведении */
+  }
+  
+  .custom-button:hover {
+    background-color: #3b4255; /* Более насыщенный фон при наведении */
+    border-color: #5a6b88; /* Яркая граница при наведении */
+  }
+  
+  .custom-button-done {
+    background-color: #1f3d30; /* Тёмно-зелёный фон */
+    border-color: #28a745; /* Ярко-зелёная граница */
+    color: #8fd98f; /* Светлый текст зелёного оттенка */
+  }
+  
+  .custom-button-current {
+    background-color: #1e2947; /* Тёмно-синий фон */
+    border-color: #007bff; /* Ярко-синяя граница */
+    color: #90caf9; /* Светлый текст голубого оттенка */
+  }
+  
+  .custom-button-default {
+    background-color: #2b3448; /* Нейтральный тёмно-синий фон */
+    border-color: #45566b; /* Граница чуть светлее фона */
+    color: #b0b0b0; /* Текст нейтрального оттенка */
+  }
+  
+  .custom-button:active {
+    transform: scale(0.95); /* Лёгкое сжатие при нажатии */
+    background-color: #4a5671; /* Насыщенный фон при клике */
+  }
+  
+  .custom-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px #007bff; /* Подсветка при фокусе */
+  }

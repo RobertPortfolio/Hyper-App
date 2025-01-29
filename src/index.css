@@ -1,0 +1,109 @@
+/* Используйте #8A2BE2 для кнопок, заголовков или активных элементов.
+#66D9D9 идеально подходит для подсветки, графиков или иконок. */
+
+body {
+    background-color: #10141b;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Text Color */
+.text-main {
+    color: #ffffff;
+}
+.text-secondary {
+    color: #B0B0B0 !important;
+}
+.text-tertiary {
+    color: #8A8A8A;
+}
+
+/* Задники */
+
+.bg-custom-secondary {
+    background-color: #26374a;
+}
+
+.bg-custom-primary {
+    background-color: #4b6a81;
+}
+
+.bg-black {
+    background-color: #0c0c0c;
+}
+
+.bg-component {
+    background-color: #18222e;
+}
+
+.bg-main {
+    background-color: #10141b;
+}
+
+.bg-header {
+    background-color: #1e2a37;
+}
+
+/* Colors */
+
+.purple {
+    color: #8a2be2;
+}
+
+.mint {
+    color: #66D9D9;
+}
+
+h2 {
+    font-weight: 700;
+}
+
+button {
+    all: unset; /* Убирает все стили кнопки */
+    background: transparent; /* Убирает фоновый цвет */
+    border: none; /* Убирает рамку */
+    padding: 0; /* Убирает внутренние отступы */
+    font: inherit; /* Наследует шрифт от родительского элемента */
+    cursor: pointer; /* Курсор указывает на кнопку */
+}
+
+button:focus {
+    outline: none; /* Убирает контур при фокусировке */
+}
+
+button:hover {
+    opacity: 0.8; /* Добавляет эффект при наведении */
+}
+
+.btn-main {
+    background-color: #8a2be2;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-secondary {
+    background-color: #4d4d4d;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.font-size-secondary {
+    font-size: 14px;
+}
+.font-size-tertiary {
+    font-size: 12px;
+}
+
+.border-purple {
+    border: 1px solid #8a2be2;
+}
+
+.border-mint {
+    border: 1px solid #66D9D9;
+}

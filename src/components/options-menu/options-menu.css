@@ -1,0 +1,12 @@
+.dropdown-item:hover {
+    color: #000 !important; /* Черный текст при наведении */
+    background-color: #f8f9fa; /* Светлый фон для контраста */
+}
+
+.dropdown-menu {
+  overflow: hidden; /* Предотвращает выход содержимого за края */
+}
+
+.width-20 {
+  width: 20px;
+}

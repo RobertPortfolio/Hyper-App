@@ -1,0 +1,29 @@
+.h-55 {
+    height: 55px;
+}
+
+.offcanvas-below-header {
+    margin-top: 56px;
+}
+
+.mobile-header {
+    border-bottom: 1px solid #243443;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.mobile-header-li {
+    text-decoration: none;
+    color: #fff;
+}
+
+.icon-fixed-width {
+    width: 24px; /* Фиксированная ширина для иконок */
+    text-align: center; /* Центрирование внутри контейнера */
+    font-size: 1.2rem;
+}

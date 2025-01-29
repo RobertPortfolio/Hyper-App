@@ -1,0 +1,20 @@
+.rubbish-bin-color {
+    color: var(--rubbish-bin-color);
+}
+
+button {
+    all: unset; /* Убирает все стили кнопки */
+    background: transparent; /* Убирает фоновый цвет */
+    border: none; /* Убирает рамку */
+    padding: 0; /* Убирает внутренние отступы */
+    font: inherit; /* Наследует шрифт от родительского элемента */
+    cursor: pointer; /* Курсор указывает на кнопку */
+}
+
+button:focus {
+    outline: none; /* Убирает контур при фокусировке */
+}
+
+button:hover {
+    opacity: 0.8; /* Добавляет эффект при наведении */
+}

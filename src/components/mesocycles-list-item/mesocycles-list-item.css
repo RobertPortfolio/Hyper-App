@@ -1,0 +1,19 @@
+.mesocycle-status {
+    padding: 4px; /* Внутренние отступы */
+    border: 1px solid #3a3f4c; /* Граница кнопки */
+    font-size: 0.9rem; /* Размер текста */
+    text-transform: uppercase;
+    font-weight: 500; /* Жирность текста */
+  }
+
+  .mesocycle-status-current {
+    background-color: #3a3f54; /* Тёмно-синий фон с серым оттенком */
+    border-color: #4e5a73; /* Граница чуть светлее фона */
+    color: #d6e1f2; /* Светло-синий текст */
+}
+
+.mesocycle-status-done {
+    background-color: #1b5e20; /* Очень тёмно-зелёный фон */
+    border-color: #2e7d32; /* Тёмно-зелёная граница */
+    color: #a5d6a7; /* Светло-зелёный текст */
+}
