@@ -39,6 +39,7 @@ const CustomExercisesListItem = ({ exercise }) => {
                                 label: 'Удалить упражнение',
                                 action: handleDeleteExercise,
                                 className: 'text-danger',
+                                icon: 'fa fa-trash',
                             },
                         ]}
                         direction='right'

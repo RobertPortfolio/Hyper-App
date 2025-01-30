@@ -45,7 +45,11 @@ const initialState = {
 const exercisesSlice = createSlice({
     name: 'exercises',
     initialState,
-    reducers: {},
+    reducers: {
+      resetError(state) {
+        state.error = null;
+      },
+    },
     extraReducers: (builder) => {
       // Обработка getExercisesThunk
       builder
@@ -93,4 +97,5 @@ const exercisesSlice = createSlice({
     },
   });
 
+  export const { resetError } = exercisesSlice.actions;
   export default exercisesSlice.reducer;

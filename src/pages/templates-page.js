@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import TemplatesListItem from '../components/templates-list-item/templates-list-item';
 import GroupButton from '../components/group-button';
 import TooltipExplanation from '../components/tooltip-explanation';
 import Spinner from '../components/spinner';
+import ErrorToast from '../components/error-toast';
+import { resetError } from '../redux/slices/templates-slice';
 
 const TemplatesPage = () => {
 
     const { templates, status, error } = useSelector((state) => state.templates);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [ templatesTypeIsCustom, setTemplatesTypeIsCustom ] = useState(false);
 
     const handleNavigateToCreateTemplate = () => {
         navigate('/templates/create-custom-template');
     }
+
+    const handleResetError = () => {
+        dispatch(resetError());
+    };
 
     if(status === 'loading' || status==='idle') {
         return <Spinner />
@@ -48,6 +55,9 @@ const TemplatesPage = () => {
             </div>
 
             <div>
+                {templatesTypeIsCustom && templates.filter(template => template.isCustom).length === 0 && (
+                    <div className='alert alert-primary'>Список пользовательских шаблонов пуст</div>
+                )}
                 {templates.map((template) => 
                     template.isCustom === templatesTypeIsCustom && (
                         <div key={template._id}>
@@ -58,6 +68,11 @@ const TemplatesPage = () => {
                     )
                 )}
             </div>
+
+            {error && <ErrorToast 
+                message={error}
+                onClose={handleResetError}
+            />}
         </div>
     )
 }

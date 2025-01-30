@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './options-menu.css';
 
-const OptionsMenu = ({ options, direction, header }) => {
+const OptionsMenu = ({ options, direction, header, icon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -23,7 +23,6 @@ const OptionsMenu = ({ options, direction, header }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     }
 
-    // Очистка обработчика при размонтировании
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
@@ -34,20 +33,21 @@ const OptionsMenu = ({ options, direction, header }) => {
       </button>
       {isOpen && (
         <ul
-          className="dropdown-menu show bg-dark text-light font-size-secondary rounded-0"
+          className="dropdown-menu show bg-custom-secondary text-light font-size-secondary rounded-0"
           style={style}
         >
           {header && <li className="dropdown-header">{header}</li>}
           {options.map((option, index) => (
             <li key={index}>
               <button
-                className={`dropdown-item w-100 ${option.className || ''}`}
+                className={`dropdown-item w-100 py-2 d-flex align-items-center ${option.className || ''}`}
                 onClick={() => {
                   option.action();
                   toggleMenu();
                 }}
               >
-                {option.label}
+                <i className={`me-2 width-20 text-center ${option.icon || 'fa-solid fa-cog'}`}></i> {/* Дефолтная иконка */}
+                <span>{option.label}</span>
               </button>
             </li>
           ))}

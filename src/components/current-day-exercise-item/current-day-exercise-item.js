@@ -75,36 +75,43 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                                 label: 'Добавить подход',
                                 action: handleAddSet,
                                 className: 'text-light',
+                                icon: 'fa fa-add',
                             },
                             {
                                 label: 'История',
                                 action: () => setIsExerciseHistoryOpen(true),
                                 className: 'text-light',
+                                icon: 'fa fa-clipboard-list',
                             },
                             {
                                 label: 'Заменить упражнение',
                                 action: ()=>setIsOpenExerciseList(true),
                                 className: 'text-light',
+                                icon: 'fa fa-sync-alt',
                             },
                             {
                                 label: 'Переместить выше',
                                 action: handleMoveUpExercise,
                                 className: 'text-light',
+                                icon: 'fa fa-arrow-up',
                             },
                             {
                                 label: 'Переместить ниже',
                                 action: handleMoveDownExercise,
                                 className: 'text-light',
+                                icon: 'fa fa-arrow-down',
                             },
                             {
                                 label: 'Новая заметка',
                                 action: ()=>setIsNotesFormOpen(true),
                                 className: 'text-light',
+                                icon: 'fa fa-edit',
                             },
                             {
                                 label: 'Удалить упражнение',
                                 action: handleDeleteExercise,
                                 className: 'text-danger',
+                                icon: 'fa fa-trash',
                             },
                         ]}
                         direction='right'

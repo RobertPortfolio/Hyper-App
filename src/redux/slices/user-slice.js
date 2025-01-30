@@ -26,9 +26,12 @@ export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWith
     }
 });
 
-export const initializeUser = createAsyncThunk('user/initialize', async (_, { rejectWithValue }) => {
+export const initializeUser = createAsyncThunk('user/initialize', async (_, { getState, rejectWithValue }) => {
     try {
-        const user = await fetchCurrentUser();
+        const token = localStorage.getItem('token'); // или getState().user.token;
+        if (!token) return rejectWithValue('Нет токена');
+
+        const user = await fetchCurrentUser(token);
         return user;
     } catch (error) {
         return rejectWithValue(error.message);
@@ -68,6 +71,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.user = action.payload.user;
                 state.isAuthenticated = true;
+                localStorage.setItem('token', action.payload.token);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
@@ -81,6 +85,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.user = action.payload.user;
                 state.isAuthenticated = true;
+                localStorage.setItem('token', action.payload.token); // Сохраняем токен
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
@@ -94,6 +99,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.user = null;
                 state.isAuthenticated = false;
+                localStorage.removeItem('token'); // Удаляем токен
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.loading = false;

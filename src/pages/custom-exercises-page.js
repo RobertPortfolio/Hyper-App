@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CustomExerciseForm from '../components/custom-exercise-form';
 import { Modal } from 'react-bootstrap';
 import CustomExercisesListItem from '../components/custom-exercises-list-item';
 import Spinner from '../components/spinner';
+import ErrorToast from '../components/error-toast';
+import { resetError } from '../redux/slices/exercises-slice';
 
 export const CustomExercisesPage = () => {
     const [isOpenForm, setIsOpenForm] = useState(false);
+    const dispatch = useDispatch();
     const { exercises, status, error } = useSelector((state) => state.exercises);
+
+    const handleResetError = () => {
+        dispatch(resetError());
+    };
     
     if(status === 'loading' || status==='idle') {
         return <Spinner />
@@ -23,7 +30,10 @@ export const CustomExercisesPage = () => {
                     <i className="fa fa-add me-2" />Добавить
                 </button>
             </div>
-            
+
+            {exercises.filter(exercise => exercise.isCustom).length === 0 && (
+                <div className='alert alert-primary'>Список пользовательских упражнений пуст</div>
+            )}
             {exercises.map((exercise) => 
                 exercise.isCustom === true && (
                     <div key={exercise._id} className='mt-1'>
@@ -32,6 +42,10 @@ export const CustomExercisesPage = () => {
                 )
             )}
             
+            {error && <ErrorToast 
+                message={error}
+                onClose={handleResetError}
+            />}
 
             {/* Модальное окно */}
             <Modal 

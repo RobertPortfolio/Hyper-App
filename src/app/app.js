@@ -5,7 +5,6 @@ import { getExercisesThunk } from '../redux/slices/exercises-slice';
 import { getTemplatesThunk } from '../redux/slices/templates-slice';
 import { getMesocyclesThunk } from '../redux/slices/mesocycles-slice';
 import { Routes, Route } from 'react-router-dom';
-import LanguageSwitch from '../components/language-switch';
 import Header from '../components/header';
 import Spinner from '../components/spinner';
 import ProtectedRoute from '../components/protected-route';
@@ -29,8 +28,10 @@ const App = () => {
     const { isAuthenticated, loading, user } = useSelector((state) => state.user);
 
     useEffect(() => {
-        dispatch(initializeUser());
-    }, [dispatch]);
+        if (isAuthenticated) {
+            dispatch(initializeUser());
+        }
+    }, [dispatch, isAuthenticated]);
 
     useEffect(() => {
         if (user && user._id) {

@@ -48,11 +48,13 @@ const MesocyclesListItem = ({ mesocycle }) => {
                                     label: 'Выбрать текущим',
                                     action: changeCurrentMesocycle,
                                     className: 'text-light',
+                                    icon: 'fa-solid fa-dot-circle',
                                 },
                                 {
                                     label: 'Удалить мезоцикл',
                                     action: handleDeleteMesocycle,
                                     className: 'text-danger',
+                                    icon: 'fa fa-trash',
                                 },
                             ]}
                             direction='right'

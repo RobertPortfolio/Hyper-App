@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Collapse } from 'react-bootstrap';
-import { FaRegCalendarAlt } from 'react-icons/fa';  
+import { FaRegCalendarAlt, FaCalendarCheck } from 'react-icons/fa';  
 import { days as daysList, getName } from '../../assets/assets';
 import CurrentDayExerciseItem from '../current-day-exercise-item';
 import { selectCurrentDay, updateMesocycleThunk, selectCurrentMesocycles, changeCurrentDay } from '../../redux/slices/mesocycles-slice';
@@ -68,8 +69,14 @@ const CurrentWorkoutForm = () => {
     }
 
     if (!currentDay) {
-        return <div className='alert alert-primary m-3'>Создайте мезоцикл чтобы вести журнал тренировок!</div>;
-    }
+        return (
+            <div className='alert alert-primary m-3'>
+                <Link to='/plan-mesocycle' className='me-1'>Создайте мезоцикл</Link>
+                чтобы вести журнал тренировок!
+            </div>
+    
+        )
+        }
 
     return (
         <div>
@@ -89,7 +96,7 @@ const CurrentWorkoutForm = () => {
                             explanation='Сохраняйте данные тренировки по окончанию, чтобы не потерять их'
                         />
                         <button
-                            className='btn-main ms-2'
+                            className='btn-main ms-3'
                             onClick={handleSave}>
                             Сохранить
                         </button>
@@ -106,7 +113,7 @@ const CurrentWorkoutForm = () => {
                         <div className='me-3'>
                             <button 
                                 onClick={toggleCalendar}>
-                                <FaRegCalendarAlt size={24} />
+                                {currentDay.isDone ? <FaCalendarCheck size={24} /> : <FaRegCalendarAlt size={24} />}
                             </button>
                         </div>
                         <div className=''>
@@ -115,12 +122,20 @@ const CurrentWorkoutForm = () => {
                                     {
                                         label: 'К следующему дню',
                                         action: handleToNextDay,
+                                        className: 'text-primary',
+                                        icon: 'fa fa-arrow-right',
+                                    },
+                                    {
+                                        label: 'Открыть календарь',
+                                        action: () => setOpenCalendar(true),
                                         className: 'text-light',
+                                        icon: 'fa fa-calendar',
                                     },
                                     {
                                         label: 'Добавить упражнение',
                                         action: () => setIsOpenNewExerciseForm(true),
                                         className: 'text-light',
+                                        icon: 'fa fa-add',
                                     },
                                 ]}
                                 direction='right'

@@ -18,9 +18,8 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
         <Modal 
             show={isExerciseHistoryOpen}
             onHide={() => setIsExerciseHistoryOpen(false)}
-            
         >
-            <Modal.Header closeButton className="bg-dark">
+            <Modal.Header closeButton className="bg-dark border-0">
                 <div>
                     <div>История упражнения</div>
                     <div className="font-size-secondary text-secondary">{exerciseData.name}</div>
@@ -50,24 +49,32 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
                         )
                     )
                     .map(({ exerciseItem, mesocycleName, weekNumber, dayId }, index) => (
-                        <div key={index} className='mb-2 border p-2'>
+                        <div key={index} className='mb-2 border p-2 bg-component rounded'>
 
                             <div className="font-size-secondary text-secondary">
                                 {mesocycleName} 
                             </div>
-                            <div className='mb-1'>
-                                Неделя {weekNumber} {getName(daysList, dayId)}
+                            <div className='mb-1 text-secondary'>
+                                Неделя {weekNumber} • {getName(daysList, dayId)}
                             </div>
 
                             
-                            {exerciseItem.sets.map((set) => (
-                                <div key={set._id}>
-                                    {set.weight} кг - {set.reps} повторения {set.type === 'myoreps' && '(M)'} {set.type === 'myorepsMatch' && '(MM)'}
-                                </div>
-                            ))}
+                            <div className="d-flex flex-column gap-1">
+                                {exerciseItem.sets.map((set) => (
+                                    <div key={set._id} className="d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <strong>{set.weight} кг</strong> — {set.reps} повторения
+                                        </span>
+                                        <span className="">
+                                            {set.type === 'myoreps' && '(M)'}
+                                            {set.type === 'myorepsMatch' && '(MM)'}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
-                    <div className='d-flex justify-content-end'>
+                    <div className='d-flex justify-content-end mt-4'>
                         <button 
                             className='btn-secondary'
                             onClick={() => setIsExerciseHistoryOpen(false)}

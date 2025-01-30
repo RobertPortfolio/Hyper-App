@@ -61,8 +61,7 @@ export const logout = async () => {
 }
 
 // Проверка токена
-export const fetchCurrentUser = async () => {
-    const token = localStorage.getItem('token');
+export const fetchCurrentUser = async (token) => {
     if (!token) {
         throw new Error('Токен не найден');
     }
@@ -80,7 +79,6 @@ export const fetchCurrentUser = async () => {
 
     return await response.json();
 };
-
 
 // Exercises
 

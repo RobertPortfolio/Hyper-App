@@ -45,7 +45,11 @@ const initialState = {
 const templatesSlice = createSlice({
     name: 'templates',
     initialState,
-    reducers: {},
+    reducers: {
+      resetError(state) {
+        state.error = null;
+      },
+    },
     extraReducers: (builder) => {
       // Обработка getTemplatesThunk
       builder
@@ -93,5 +97,6 @@ const templatesSlice = createSlice({
         });
     },
   });
-  
+
+  export const { resetError } = templatesSlice.actions;
   export default templatesSlice.reducer;

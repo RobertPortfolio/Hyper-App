@@ -48,11 +48,13 @@ const TemplatesListItem = ({ template }) => {
                                         label: 'Информация',
                                         action: () => setIsOpenForm(true),
                                         className: 'text-light',
+                                        icon: 'fa fa-circle-info',
                                     },
                                     {
                                         label: 'Удалить шаблон',
                                         action: handleDeleteTemplate,
                                         className: 'text-danger',
+                                        icon: 'fa-solid fa-trash',
                                     },
                                 ]}
                                 direction='right'

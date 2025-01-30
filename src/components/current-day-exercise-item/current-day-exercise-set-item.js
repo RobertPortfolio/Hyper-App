@@ -95,24 +95,28 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                 <OptionsMenu
                     options={[
                         {
-                            label: 'Вставить снизу',
+                            label: 'Копировать снизу',
                             action: () => handleAddSetBelow(set._id),
                             className: 'text-light',
+                            icon: 'fa fa-add',
                         },
                         {
-                            label: 'Myo-reps',
+                            label: 'Myo-Reps',
                             action: () => handleChangeSetType('myoreps', set._id),
                             className: 'text-light',
+                            icon: 'fa fa-m',
                         },
                         {
-                            label: 'Myo-reps match',
+                            label: 'Myo-Reps Match',
                             action: () => handleChangeSetType('myorepsMatch', set._id),
                             className: 'text-light',
+                            icon: 'fa fa-exchange-alt',
                         },
                         {
                             label: 'Удалить подход',
                             action: () => handleDeleteSet(set._id),
                             className: 'text-danger',
+                            icon: 'fa fa-trash',
                         },
                     ]}
                     direction="left"

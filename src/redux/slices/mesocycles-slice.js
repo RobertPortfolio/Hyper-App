@@ -121,9 +121,13 @@ const findDayById = (mesocycles, dayId) => {
   return null; // Если день не найден
 };
 
+const allExerciseDone = (exercise) => {
+  return exercise.sets.every((set) => set.isDone);
+}
+
 const allSetsDone = (day) => {
   return day.exercises.every((exercise) =>
-      exercise.sets.every((set) => set.isDone)
+      allExerciseDone(exercise)
   );
 };
 
@@ -164,7 +168,6 @@ const mesocyclesSlice = createSlice({
             const allDaysDone = currentMesocycle.weeks.every((week) =>
                 week.days.every((day) => day.isDone)
             );
-    
             // Обновляем поле isDone текущего мезоцикла
             if (allDaysDone) {
               const now = new Date();
@@ -173,9 +176,9 @@ const mesocyclesSlice = createSlice({
                   day: 'numeric', // Число
                   year: 'numeric' // Год
               });
-              currentMesocycle.isDone = allDaysDone;
               currentMesocycle.endDate = formattedDate;
             }
+            currentMesocycle.isDone = allDaysDone;
         }
       },
       deleteExercise(state, action) {

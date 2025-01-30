@@ -21,7 +21,7 @@ const CreateMesocyclePage = () => {
     const [modalSubmit, setModalSubmit] = useState(false); 
     const [isOpenExerciseForm, setIsOpenExerciseForm] = useState(false);
 
-    const durations = [ '3', '4', '5', '6' ];
+    const durations = [ '2', '3', '4', '5', '6' ];
 
     // Дефолтное состояние для шаблона
     const defaultTemplate = {
@@ -50,7 +50,7 @@ const CreateMesocyclePage = () => {
     // Ошибки относящиеся к дням и упражнениям
     const [errorInfo, setErrorInfo] = useState(null);
 
-    const [mesocycleData, setMesocycleData] = useState({ name: '', duration: '3', error: null });
+    const [mesocycleData, setMesocycleData] = useState({ name: '', duration: '4', error: null });
 
     const handleChangeMesocycle = (e) => {
         const { name, value } = e.target;
@@ -129,13 +129,15 @@ const CreateMesocyclePage = () => {
         };
 
         const rir =  
-            mesocycleData.duration === '3' 
-                ? ['2', '1', '0'] 
-                : mesocycleData.duration === '4' 
-                    ? ['2', '1-2', '1', '0'] 
-                    : mesocycleData.duration === '5' 
-                        ? ['2', '1-2', '1', '0-1', '0']
-                        : [ '2', '1-2', '1', '0-1', '0-1', '0'];
+            mesocycleData.duration === '2' 
+                ? ['1-2', '0-1'] 
+                : mesocycleData.duration === '3' 
+                    ? ['2', '1', '0'] 
+                    : mesocycleData.duration === '4' 
+                        ? ['2', '1-2', '1', '0'] 
+                        : mesocycleData.duration === '5' 
+                            ? ['2', '1-2', '1', '0-1', '0']
+                            : [ '2', '1-2', '1', '0-1', '0-1', '0'];
 
         const weeks = Array.from({ length: mesocycleData.duration }, (_, weekIndex) => ({
             number: weekIndex + 1, // Нумерация недель с 1
@@ -211,6 +213,7 @@ const CreateMesocyclePage = () => {
                                     label: 'Создать упражнение',
                                     action: ()=>setIsOpenExerciseForm(true),
                                     className: 'text-light',
+                                    icon: 'fa fa-user-edit',
                                 },
                             ]}
                             direction='right'
@@ -244,10 +247,8 @@ const CreateMesocyclePage = () => {
                     onHide={()=>setModalSubmit(false)}
                 >
                     <Modal.Body className='bg-dark'>
-                        <div className="modal-header">
-                            <h5 className="modal-title">Mesocycle Data</h5>
-                        </div>
                         <div className="modal-body">
+                            <h5 className="modal-title mb-3">Создание мезоцикла</h5>
                             <label>Введите название мезоцикла</label>
                             <input
                                 type="text"
@@ -264,7 +265,7 @@ const CreateMesocyclePage = () => {
                             {durations.map((duration) => 
                                 <button 
                                     key={duration}
-                                    className={`btn ${mesocycleData.duration === duration ? 'btn-primary' : 'btn-outline-light'} rounded-0`}
+                                    className={`flex-grow-1 py-3 ${mesocycleData.duration === duration ? 'btn-main text-center border' : 'btn btn-outline-light'} rounded-0`}
                                     onClick={()=>setMesocycleData({...mesocycleData, duration: duration})}
                                 >
                                     {duration}
@@ -273,7 +274,7 @@ const CreateMesocyclePage = () => {
                                 
                             </div>
                         </div>
-                        <div className="modal-footer">
+                        <div className="modal-footer border-0">
                             <button
                                 type="button"
                                 className="btn-secondary"
