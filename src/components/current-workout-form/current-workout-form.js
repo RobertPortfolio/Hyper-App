@@ -81,7 +81,7 @@ const CurrentWorkoutForm = () => {
     return (
         <div>
             <div className={`sticky-element bg-component p-3 border-bottom ${currentDay.isDone ? 'border-success border-2':'border-secondary'}`}>
-                <div className='d-flex justify-content-between align-items-center mb-4'>
+                <div className='d-flex justify-content-between align-items-center mb-3'>
                     <div>
                         <span className='text-secondary'>
                             {currentMesocycle.name}
@@ -90,7 +90,7 @@ const CurrentWorkoutForm = () => {
                             <span className='fas fa-check-circle text-success ms-1'></span>
                         }
                     </div>
-                    <div>
+                    <div className='d-flex align-items-center'>
                         <TooltipExplanation 
                             label=''
                             explanation='Сохраняйте данные тренировки по окончанию, чтобы не потерять их'
