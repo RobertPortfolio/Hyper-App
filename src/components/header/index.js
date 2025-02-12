@@ -1,3 +1,4 @@
 import Header from './header';
+import Sidebar from './sidebar';
 
-export default Header;
+export { Header, Sidebar };

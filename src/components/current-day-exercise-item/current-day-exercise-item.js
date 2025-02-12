@@ -176,12 +176,16 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                 show={isOpenExerciseList}
                 onHide={() => setIsOpenExerciseList(false)}
             >
-                <Modal.Body className='bg-dark'>
+                <Modal.Header closeButton closeVariant="white" className="bg-dark border-0">
                     <div>
-                        <div>Замена упражнения</div>
-                        <div className='font-size-secondary text-secondary mb-3'>
+                        <h5>Замена упражнения</h5>
+                        <div className='font-size-secondary text-secondary'>
                             Выберите упражнение из списка
                         </div>
+                    </div>
+                </Modal.Header>
+                <Modal.Body className='bg-dark'>
+                    <div>
                         {exercises
                             .filter((exerciseItem) => exerciseItem.targetMuscleGroupId === exercise.targetMuscleGroupId)
                             .map((filteredExercise) => (

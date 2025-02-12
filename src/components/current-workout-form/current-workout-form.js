@@ -30,6 +30,7 @@ const CurrentWorkoutForm = () => {
 
     const toggleCalendar = () => {
         setOpenCalendar((prevState) => !prevState);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     const findDayIndex = () => {
@@ -76,7 +77,7 @@ const CurrentWorkoutForm = () => {
             </div>
     
         )
-        }
+    }
 
     return (
         <div>
@@ -146,7 +147,7 @@ const CurrentWorkoutForm = () => {
                     </div>
                 </div>
             </div>
-            
+
             <div>  
                 <Collapse in={openCalendar} >
                     <div>
@@ -154,7 +155,7 @@ const CurrentWorkoutForm = () => {
                     </div>
                 </Collapse>
             </div>
-           
+            
             {currentDay.exercises.map((exercise, index) => {
                 const previousExerciseTargetMuscleGroupId = index > 0 ? currentDay.exercises[index - 1].targetMuscleGroupId : null;
                 return (

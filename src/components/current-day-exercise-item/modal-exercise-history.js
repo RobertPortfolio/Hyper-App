@@ -19,7 +19,7 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
             show={isExerciseHistoryOpen}
             onHide={() => setIsExerciseHistoryOpen(false)}
         >
-            <Modal.Header closeButton className="bg-dark border-0">
+            <Modal.Header closeButton closeVariant='white' className="bg-dark border-0">
                 <div>
                     <div>История упражнения</div>
                     <div className="font-size-secondary text-secondary">{exerciseData.name}</div>

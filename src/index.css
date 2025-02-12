@@ -1,5 +1,3 @@
-/* Используйте #8A2BE2 для кнопок, заголовков или активных элементов.
-#66D9D9 идеально подходит для подсветки, графиков или иконок. */
 
 body {
     background-color: #10141b;
@@ -106,4 +104,15 @@ button:hover {
 
 .border-mint {
     border: 1px solid #66D9D9;
+}
+
+.create-meso-day-list-item-muscle-group {
+    background-color: #240046;
+    color: #E0AAFF;
+    border: 1px solid #7B2CBF;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.5px;
+    padding: 3px 8px;
 }

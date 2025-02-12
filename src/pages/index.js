@@ -1,4 +1,3 @@
-export * from './test-page';
 export * from './custom-exercises-page';
 export * from './register-page';
 export * from './login-page';

@@ -19,7 +19,7 @@ const Calendar = () => {
             <div className="font-size-secondary text-tertiary my-3">НЕДЕЛИ</div>
             <div className="row justify-content-center">
                 {currentMesocycle.weeks.map((week) => (
-                <div className="col text-center" key={week._id}>
+                <div className="col text-center p-1" key={week._id}>
                     <h6 className="m-0">{week.number}</h6>
                     <div className="font-size-secondary text-tertiary mb-2">{week.rir} RIR</div>
                     <div className="d-flex flex-column align-items-center">

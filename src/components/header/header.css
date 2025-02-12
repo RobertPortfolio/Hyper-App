@@ -27,3 +27,36 @@
     text-align: center; /* Центрирование внутри контейнера */
     font-size: 1.2rem;
 }
+
+.sidebar {
+    width: 350px;
+    background: #1e2a37;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+
+
+@media (min-width: 768px) {
+    .sidebar {
+        display: block;
+    }
+    .content {
+        margin-left: 350px;
+    }
+    .limited-width {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .full-width {
+        max-width: 100%;
+    }
+    .mobile-header {
+        display: none;
+    }
+}

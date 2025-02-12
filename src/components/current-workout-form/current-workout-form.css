@@ -3,3 +3,11 @@
     top: 51px;
     z-index: 9;
 }
+
+@media (min-width: 768px) {
+    .sticky-element {
+        position: sticky;
+        top: 0px;
+        z-index: 9;
+    }
+}

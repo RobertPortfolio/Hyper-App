@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import Spinner from '../spinner';
-import { days as daysOfWeek, muscleGroups } from '../../assets/assets';
+import { muscleGroups } from '../../assets/assets';
 import { addExercise } from '../../redux/slices/mesocycles-slice';
+import TooltipExplanation from '../tooltip-explanation';
 
 const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) => {
 
@@ -31,9 +32,9 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
             show={isOpenNewExerciseForm}
             onHide={() => setIsOpenNewExerciseForm(false)}
         >
-            <Modal.Header closeButton className="bg-dark">
+            <Modal.Header closeButton closeVariant="white" className="bg-dark border-0">
                 <div>
-                    <h5>Добавить упражнение</h5>
+                    <h5>Добавить упражнение <TooltipExplanation label='' explanation='Если в списке не будет необходимого упражнения, то вы можете добавить его в Меню -> Пользовательские упражнения -> Добавить'/></h5>
                 </div>
             </Modal.Header>
             <Modal.Body className='bg-dark'>
