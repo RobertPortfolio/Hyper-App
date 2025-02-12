@@ -52,8 +52,8 @@ const App = () => {
         <div>
             <Header />
             <Sidebar />
-            <div className='layout'>
-                <div className={`content ${isFullWidth ? "full-width" : "limited-width"}`}>
+            <div className='d-flex w-100 justify-content-center'>
+                <div className={`content w-100 ${isFullWidth ? "full-width" : "limited-width"}`}>
                     <Routes>
                         <Route path="/login" element={<LoginPage />}/>
                         <Route path="/register" element={<RegisterPage />}/>
