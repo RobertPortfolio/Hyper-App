@@ -4,4 +4,9 @@
     background-color: #3a3f54; /* Тёмно-синий фон с серым оттенком */
     border-color: #4e5a73; /* Граница чуть светлее фона */
     color: #d6e1f2; /* Светло-синий текст */
+    font-size: 12px;
+}
+
+.hover-effect:hover {
+    cursor: pointer;
 }

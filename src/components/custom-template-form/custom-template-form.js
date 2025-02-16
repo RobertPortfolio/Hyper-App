@@ -20,7 +20,8 @@ const CustomTemplateForm = () => {
         name: '',
         emphasis: '',
         daysPerWeek: 1,
-        isCustom: true,
+        sex: '',
+        isCustom: false,
         authorId: '',
         days: [ getEmptyDay() ],
     });
@@ -70,10 +71,12 @@ const CustomTemplateForm = () => {
     }
 
     // Сохранение
+    // !!! authorID
     const handleSubmit = async () => {
         const updatedTemplateData = {
             ...templateData,
-            authorId: user._id,
+            //authorId: user._id,
+            authorId: '1',
         };
         
         console.log(updatedTemplateData);
@@ -106,7 +109,7 @@ const CustomTemplateForm = () => {
                 ))}
                 <div className='col-auto'>
                     <button 
-                        className="text-center btn-secondary bg-dark border border-secondary py-3" 
+                        className="text-center btn-add border border-secondary py-3" 
                         onClick={()=>handleAddDay(setTemplateData)}>
                         <i className='fa fa-add me-2'/>
                         Добавить день
@@ -118,10 +121,7 @@ const CustomTemplateForm = () => {
                 show={modalSubmit}
                 onHide={()=>setModalSubmit(false)}
             >
-                <Modal.Body className='bg-dark'>
-                    <div className="modal-header">
-                        <h5 className="modal-title">Template Data</h5>
-                    </div>
+                <Modal.Body className='bg-component'>
                     <div className="modal-body">
                         <label>Введите название шаблона *</label>
                         <input
@@ -130,7 +130,7 @@ const CustomTemplateForm = () => {
                             name="name"
                             value={templateData.name}
                             onChange={(e)=>handleChangeTemplate(setTemplateData, e)}
-                            className={`form-control bg-dark text-light rounded-0 input-custom-exercise mt-1 ${templateData.nameError && 'is-invalid'}`}
+                            className={`form-control input-custom text-light rounded-0 mt-1 ${templateData.nameError && 'is-invalid'}`}
                             placeholder=""
                             required
                         />
@@ -141,12 +141,28 @@ const CustomTemplateForm = () => {
                             name="emphasis"
                             value={templateData.emphasis}
                             onChange={(e)=>handleChangeTemplate(setTemplateData, e)}
-                            className={`form-control bg-dark text-light rounded-0 input-custom-exercise mt-1`}
+                            className={`form-control input-custom text-light rounded-0 mt-1`}
                             placeholder=""
                         />
+                        <label className='mt-3 mb-1'>Пол</label>
+                        <div className='btn-group d-flex'>
                         
+                            <button 
+                                className={`flex-grow-1 py-3 ${templateData.sex === 'female' ? 'btn-main text-center border' : 'btn btn-outline-light'} rounded-0`}
+                                onClick={()=>setTemplateData({ ...templateData, sex: 'female' })}
+                            >
+                                Female
+                            </button>
+                            <button 
+                                className={`flex-grow-1 py-3 ${templateData.sex === 'male' ? 'btn-main text-center border' : 'btn btn-outline-light'} rounded-0`}
+                                onClick={()=>setTemplateData({ ...templateData, sex: 'male' })}
+                            >
+                                Male
+                            </button>
+                            
+                        </div>
                     </div>
-                    <div className="modal-footer">
+                    <div className="modal-footer border-0">
                         <button
                             type="button"
                             className="btn-secondary"

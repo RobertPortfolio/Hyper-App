@@ -27,17 +27,22 @@ const TemplatesListItem = ({ template }) => {
 
     return (
         <>
-        <div className='card bg-component rounded-0' onClick={() => setIsOpenForm(true)}>
+        <div className='card bg-component rounded-0 hover-effect' onClick={() => setIsOpenForm(true)}>
             <div className='card-body py-2 px-3 border-top border-secondary'>
                 <div className='d-flex justify-content-between'>
                     <div>
-                        <div className='font-size-secondary text-secondary'>
-                            {template.emphasis && template.emphasis}
+                        {template.emphasis && 
+                        <div className='font-size-tertiary text-secondary text-uppercase'>
+                            {template.emphasis}
                         </div>
+                        }
                         <div className='text-light mb-1'>{template.name}</div>
-                        <span className='template-days-per-week font-size-tertiary'>
+                        <span className='template-days-per-week'>
                             {template.daysPerWeek}/НЕДЕЛЮ
                         </span>
+                        {template.sex && <span className='template-days-per-week ms-1'>
+                            {template.sex === 'female' ? 'ЖЕНСКИЙ' : 'МУЖСКОЙ'}
+                        </span>}
                     </div>
                     
                     {template.isCustom && 
@@ -70,7 +75,7 @@ const TemplatesListItem = ({ template }) => {
             show={isOpenForm}   
             onHide={() => setIsOpenForm(false)}
         >
-            <Modal.Body className='bg-dark'>
+            <Modal.Body className='bg-component'>
                 <TemplateDetails 
                     template={template}
                     handleNavigateToCreateMesocycle={handleNavigateToCreateMesocycle}

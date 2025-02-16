@@ -22,6 +22,10 @@
     color: #fff;
 }
 
+.nav-item:hover {
+    background-color: #4b6a81;
+}
+
 .icon-fixed-width {
     width: 24px; /* Фиксированная ширина для иконок */
     text-align: center; /* Центрирование внутри контейнера */
@@ -29,10 +33,9 @@
 }
 
 .sidebar {
-    width: 350px;
+    width: 330px;
     background: #1e2a37;
     color: white;
-    padding: 20px;
     height: 100vh;
     position: fixed;
     left: 0;
@@ -45,11 +48,12 @@
         display: block;
     }
     .content {
-        margin-left: 350px;
+        margin-left: 330px;
+        height: 100vh;
         overflow-x: auto; /* Позволяет прокручивать контент, если он не помещается */
     }
     .limited-width {
-        max-width: 500px;
+        max-width: 700px;
     }
     .full-width {
         max-width: 100%;

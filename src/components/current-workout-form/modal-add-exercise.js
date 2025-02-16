@@ -32,12 +32,12 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
             show={isOpenNewExerciseForm}
             onHide={() => setIsOpenNewExerciseForm(false)}
         >
-            <Modal.Header closeButton closeVariant="white" className="bg-dark border-0">
+            <Modal.Header closeButton closeVariant="white" className="bg-component border-0">
                 <div>
                     <h5>Добавить упражнение <TooltipExplanation label='' explanation='Если в списке не будет необходимого упражнения, то вы можете добавить его в Меню -> Пользовательские упражнения -> Добавить'/></h5>
                 </div>
             </Modal.Header>
-            <Modal.Body className='bg-dark'>
+            <Modal.Body className='bg-component'>
                 {!muscleGroup && <div className='mb-3'>
                     <div className='mb-3'>Выберите группу мышц</div>
                     <div className="row row-cols-2 g-3">
@@ -54,7 +54,7 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
                     </div>
                 </div>}
                 {muscleGroup && 
-                    <div className='mb-3'>
+                    <div>
                         <div className='text-secondary mb-3'>Выберите упражнение для {muscleGroups.find((group) => group.id === Number(muscleGroup))?.ruName || "Unknown Muscle Group"}</div>
                         {exercises
                             .filter((exerciseItem) => Number(exerciseItem.targetMuscleGroupId) === muscleGroup)
@@ -67,7 +67,7 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
                         ))}
                     </div>
                 }
-                <div className='d-flex justify-content-end'>
+                <div className='d-flex justify-content-end mt-4'>
                     {muscleGroup && <button
                         className="btn-secondary font-size-secondary me-2"
                         onClick={() => setMuscleGroup(null)}

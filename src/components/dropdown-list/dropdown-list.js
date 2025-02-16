@@ -3,12 +3,12 @@ import React from "react";
 const DropdownList = ({ id, name, value, options, label, error, onChange, required }) => {
 
     const getClassNames = () =>
-        `form-control input-custom-exercise bg-dark text-light rounded-0 ${error ? 'is-invalid' : ''} select-with-arrow`;
+        `form-control input-custom text-light rounded-0 ${error ? 'is-invalid' : ''} select-with-arrow`;
 
     return (
         <div className="form-group mb-3">
             {label && (
-                <label htmlFor={id} className="text-light">
+                <label htmlFor={id} className="text-light mb-1">
                     {label}
                 </label>
             )}

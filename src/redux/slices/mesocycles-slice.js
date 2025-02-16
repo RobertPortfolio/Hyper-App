@@ -70,6 +70,19 @@ export const selectCurrentDay = createSelector(
   }
 );
 
+export const selectCurrentWeek = createSelector(
+  [(state) => state.mesocycles.mesocycles, (state) => state.mesocycles.currentDayId],
+  (mesocycles, currentDayId) => {
+      for (const mesocycle of mesocycles) {
+          for (const week of mesocycle.weeks) {
+              const day = week.days.find((day) => day._id === currentDayId);
+              if (day) return week;
+          }
+      }
+      return null;
+  }
+);
+
 export const selectCurrentMesocycles = createSelector(
   [(state) => state.mesocycles.mesocycles],
   (mesocycles) => {
@@ -135,7 +148,6 @@ const initialState = {
   mesocycles: [],
   currentDayId: null,
   currentRir: null,
-  currentWeekNumber: null,
   status: 'idle', // idle | loading | succeeded | failed
   error: null,
 };
@@ -148,7 +160,6 @@ const mesocyclesSlice = createSlice({
       setCurrentDayId(state, action) {
         state.currentDayId = action.payload.dayId;
         state.currentRir = action.payload.rir || state.currentRir;
-        state.currentWeekNumber = action.payload.weekNumber || state.currentWeekNumber;
       },
       changeCurrentDay(state, action) {
 
@@ -386,7 +397,7 @@ const mesocyclesSlice = createSlice({
         })
         .addCase(changeCurrentMesocycleThunk.fulfilled, (state, action) => {
           state.status = 'succeeded';
-      
+
           state.mesocycles = state.mesocycles.map((mesocycle) => ({
               ...mesocycle,
               isCurrent: mesocycle._id === action.payload._id,

@@ -91,7 +91,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
 
     return (
         <div className="row font-size-secondary g-0 text-center align-items-center mb-2">
-            <div className="col-1">
+            <div className="col-1 d-flex justify-content-center">
                 <OptionsMenu
                     options={[
                         {

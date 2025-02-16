@@ -23,14 +23,14 @@ const TemplateDayItem = ({ day, dayIndex, setTemplateData }) => {
     };
 
     return(
-        <div className='border-purple p-2 template-day-width'> 
+        <div className='border border-secondary p-2 template-day-width'> 
             <div className='d-flex mb-2'>
                 <select
                     id="dayId"
                     name="dayId"
                     value={day.dayId}
                     onChange={(e) => handleChangeDays(setTemplateData, e, dayIndex)} // Передаем индекс
-                    className={`form-control input-custom-exercise bg-dark text-light rounded-0 select-with-arrow 
+                    className={`form-control input-custom text-light rounded-0 border border-secondary select-with-arrow 
                         ${day.isValid === false && day.dayId==='' ? "is-invalid border-danger" : ""}`}
                 >
                     <option value="">Выберите день</option>
@@ -47,7 +47,7 @@ const TemplateDayItem = ({ day, dayIndex, setTemplateData }) => {
                 </button>
             </div>
             {day.exercises.map((exercise, exerciseIndex) => (
-                <div key={exerciseIndex} className='p-3 bg-dark mb-2 border border-secondary'>
+                <div key={exerciseIndex} className='p-3 bg-component mb-2 border border-secondary'>
                     <TemplateExerciseItem 
                         exercise={exercise}
                         dayIndex={dayIndex}
@@ -58,7 +58,7 @@ const TemplateDayItem = ({ day, dayIndex, setTemplateData }) => {
             ))}
             <div className='d-flex'>
                 <button 
-                    className='w-100 text-center btn-secondary bg-dark border border-secondary py-3' 
+                    className='w-100 text-center btn-add border border-secondary py-3' 
                     onClick={handleModalOpen}>
                     <i className='fa fa-add me-2'/>
                     Добавить группу мышц
@@ -73,8 +73,8 @@ const TemplateDayItem = ({ day, dayIndex, setTemplateData }) => {
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
                 <div className="modal-dialog">
-                    <div className="modal-content bg-dark rounded-0">
-                    <div className="modal-header">
+                    <div className="modal-content bg-component rounded-0">
+                    <div className="modal-header border-0">
                         <h5 className="modal-title">Выберите группу мышц</h5>
                         <div className='font-size-secondary text-secondary'>
                             {`День ${dayIndex+1} Упражнение ${day.exercises.length+1}`}
@@ -94,7 +94,7 @@ const TemplateDayItem = ({ day, dayIndex, setTemplateData }) => {
                         ))}
                         </div>
                     </div>
-                    <div className="modal-footer">
+                    <div className="modal-footer border-0">
                         <button
                         type="button"
                         className="btn-secondary"

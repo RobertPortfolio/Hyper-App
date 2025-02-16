@@ -5,7 +5,7 @@ import { Collapse } from 'react-bootstrap';
 import { FaRegCalendarAlt, FaCalendarCheck } from 'react-icons/fa';  
 import { days as daysList, getName } from '../../assets/assets';
 import CurrentDayExerciseItem from '../current-day-exercise-item';
-import { selectCurrentDay, updateMesocycleThunk, selectCurrentMesocycles, changeCurrentDay } from '../../redux/slices/mesocycles-slice';
+import { selectCurrentDay, updateMesocycleThunk, selectCurrentMesocycles, selectCurrentWeek, changeCurrentDay } from '../../redux/slices/mesocycles-slice';
 import Calendar from '../calendar/calendar';
 import OptionsMenu from '../options-menu';
 import ModalAddExercise from './modal-add-exercise';
@@ -17,10 +17,9 @@ const CurrentWorkoutForm = () => {
 
     const currentDay = useSelector(selectCurrentDay);
     const currentMesocycle = useSelector(selectCurrentMesocycles);
+    const currentWeek = useSelector(selectCurrentWeek);
 
     const dispatch = useDispatch();
-
-    const { currentWeekNumber } = useSelector((state) => state.mesocycles);
 
     const [ openCalendar, setOpenCalendar ] = useState(false);
 
@@ -34,14 +33,12 @@ const CurrentWorkoutForm = () => {
     }
 
     const findDayIndex = () => {
-        const currentWeek = currentMesocycle.weeks[currentWeekNumber - 1];
         const currentDayIndex = currentWeek.days.findIndex(day => day._id === currentDay._id);
         return currentDayIndex;
     }
 
     const handleToNextDay = () => {
         // Находим текущий день и его индекс в массиве дней недели
-        const currentWeek = currentMesocycle.weeks[currentWeekNumber - 1];
         const currentDayIndex = findDayIndex();
     
         // Проверяем, есть ли следующий день в текущей неделе
@@ -51,8 +48,8 @@ const CurrentWorkoutForm = () => {
             dispatch(changeCurrentDay(nextDayId));
         } else {
             // Если текущая неделя завершена, проверяем, есть ли следующая неделя
-            if (currentWeekNumber < currentMesocycle.weeks.length) {
-                const nextWeek = currentMesocycle.weeks[currentWeekNumber];
+            if (currentWeek.number < currentMesocycle.weeks.length) {
+                const nextWeek = currentMesocycle.weeks[currentWeek.number];
                 // Переходим на первый день следующей недели
                 const nextDayId = nextWeek.days[0]._id;
                 dispatch(changeCurrentDay(nextDayId));
@@ -84,9 +81,9 @@ const CurrentWorkoutForm = () => {
             <div className={`sticky-element bg-component p-3 border-bottom ${currentDay.isDone ? 'border-success border-2':'border-secondary'}`}>
                 <div className='d-flex justify-content-between align-items-center mb-3'>
                     <div>
-                        <span className='text-secondary'>
+                        {currentMesocycle.name && <span className='text-secondary'>
                             {currentMesocycle.name}
-                        </span>
+                        </span>}
                         {currentMesocycle.isDone && 
                             <span className='fas fa-check-circle text-success ms-1'></span>
                         }
@@ -108,7 +105,7 @@ const CurrentWorkoutForm = () => {
                 
                 <div className='d-flex justify-content-between align-items-center'>
                     <h5 className='m-0'>
-                        Неделя {currentWeekNumber} День {findDayIndex() + 1} {getName(daysList, currentDay.dayId)}
+                        Неделя {currentWeek.number} День {findDayIndex() + 1} {getName(daysList, currentDay.dayId)}
                     </h5>
                     <div className='d-flex align-items-center'>
                         <div className='me-3'>

@@ -26,7 +26,7 @@ const TemplateExerciseItem = ({ exercise, dayIndex, exerciseIndex, setTemplateDa
                 name="exerciseId"
                 value={exercise.exerciseId}
                 onChange={(e) => handleChangeExercise(setTemplateData, e, dayIndex, exerciseIndex)}
-                className={`form-control input-custom-exercise bg-dark text-light font-size-secondary rounded-0 border-secondary select-with-arrow
+                className={`form-control input-custom text-light font-size-secondary rounded-0 border-secondary select-with-arrow
                      ${exercise.isValid === false && exercise.exerciseId==='' ? "is-invalid border-danger" : ""}`}
             >
                 <option value="">Выберите упражнение</option>

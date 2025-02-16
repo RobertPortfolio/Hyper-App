@@ -52,14 +52,14 @@ const CustomExerciseForm = ({ handleCancel }) => {
     };
 
     const getInputClass = (fieldName) =>
-        `form-control bg-dark text-light rounded-0 input-custom-exercise ${errors[fieldName] ? 'is-invalid' : ''}`;
+        `form-control input-custom text-light rounded-0 ${errors[fieldName] ? 'is-invalid' : ''}`;
 
     return (
         <form className="custom-exercise-form" noValidate>
             <h3 className="text-light mb-4">Создание упражнения</h3>
 
             <div className="form-group mb-3">
-                <label htmlFor="name" className="text-light">Название</label>
+                <label htmlFor="name" className="text-light mb-1">Название</label>
                 <input
                     type="text"
                     id="name"
@@ -94,13 +94,13 @@ const CustomExerciseForm = ({ handleCancel }) => {
             />
 
             <div className="form-group mb-3">
-                <label htmlFor="notes" className="text-light">Заметки</label>
+                <label htmlFor="notes" className="text-light mb-1">Заметки</label>
                 <input
                     id="notes"
                     name="notes"
                     value={formData.notes}
                     onChange={handleChange}
-                    className="form-control bg-dark text-light rounded-0 input-custom-exercise"
+                    className="form-control input-custom text-light rounded-0"
                 />
             </div>
 

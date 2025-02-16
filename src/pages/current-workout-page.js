@@ -19,10 +19,9 @@ const CurrentWorkoutPage = () => {
             const currentDay = currentWeek?.days.find((day) => day.isCurrent);
 
             if (currentDay) {
-                dispatch(setCurrentDayId({ 
+                dispatch(setCurrentDayId({
                     dayId: currentDay._id, 
                     rir: currentWeek.rir,
-                    weekNumber: currentWeek.number
                 }));
             }
         }

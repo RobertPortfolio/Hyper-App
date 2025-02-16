@@ -163,7 +163,7 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                 show={isNotesFormOpen}   
                 onHide={() => setIsNotesFormOpen(false)}
             >
-                <Modal.Body className='bg-dark'>
+                <Modal.Body className='bg-component'>
                     <NotesExerciseForm 
                         exerciseId={exercise.exerciseId}
                         prevNotes={exercise.notes}
@@ -176,7 +176,7 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                 show={isOpenExerciseList}
                 onHide={() => setIsOpenExerciseList(false)}
             >
-                <Modal.Header closeButton closeVariant="white" className="bg-dark border-0">
+                <Modal.Header closeButton closeVariant="white" className="bg-component border-0">
                     <div>
                         <h5>Замена упражнения</h5>
                         <div className='font-size-secondary text-secondary'>
@@ -184,7 +184,7 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                         </div>
                     </div>
                 </Modal.Header>
-                <Modal.Body className='bg-dark'>
+                <Modal.Body className='bg-component'>
                     <div>
                         {exercises
                             .filter((exerciseItem) => exerciseItem.targetMuscleGroupId === exercise.targetMuscleGroupId)
@@ -195,7 +195,7 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                                     </button>
                                 </div>
                         ))}
-                        <div className='d-flex justify-content-end'>
+                        <div className='d-flex justify-content-end mt-4'>
                             <button 
                                 className='btn-secondary'
                                 onClick={() => setIsOpenExerciseList(false)}

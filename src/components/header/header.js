@@ -23,7 +23,7 @@ const Header = () => {
                 </button>
             </Navbar>
             <Offcanvas show={show} onHide={handleToggle} placement="start" className="offcanvas-below-header bg-component">
-                <Offcanvas.Body>
+                <Offcanvas.Body className='px-0'>
                     <MenuHeader handleToggle={handleToggle}/>
                 </Offcanvas.Body>
             </Offcanvas>

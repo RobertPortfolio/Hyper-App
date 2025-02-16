@@ -19,14 +19,14 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
             show={isExerciseHistoryOpen}
             onHide={() => setIsExerciseHistoryOpen(false)}
         >
-            <Modal.Header closeButton closeVariant='white' className="bg-dark border-0">
+            <Modal.Header closeButton closeVariant='white' className="bg-component border-0">
                 <div>
                     <div>История упражнения</div>
                     <div className="font-size-secondary text-secondary">{exerciseData.name}</div>
                 </div>
             </Modal.Header>
-            <Modal.Body className='bg-dark'>
-            <div>
+            <Modal.Body className='bg-component'>
+            <div> 
                 {mesocycles
                     .slice()
                     .reverse()
@@ -49,7 +49,7 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
                         )
                     )
                     .map(({ exerciseItem, mesocycleName, weekNumber, dayId }, index) => (
-                        <div key={index} className='mb-2 border p-2 bg-component rounded'>
+                        <div key={index} className='mb-2 border p-2 bg-custom-secondary rounded'>
 
                             <div className="font-size-secondary text-secondary">
                                 {mesocycleName} 

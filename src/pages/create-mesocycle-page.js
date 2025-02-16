@@ -234,7 +234,7 @@ const CreateMesocyclePage = () => {
                     ))}
                     <div className='col-auto'>
                         <button 
-                            className="text-center btn-secondary bg-dark border border-secondary py-3" 
+                            className="text-center btn-add border border-secondary py-3" 
                             onClick={()=>handleAddDay(setTemplateData)}>
                             <i className='fa fa-add me-2'/>
                             Добавить день
@@ -246,17 +246,16 @@ const CreateMesocyclePage = () => {
                     show={modalSubmit}
                     onHide={()=>setModalSubmit(false)}
                 >
-                    <Modal.Body className='bg-dark'>
+                    <Modal.Body className='bg-component'>
                         <div className="modal-body">
-                            <h5 className="modal-title mb-3">Создание мезоцикла</h5>
-                            <label>Введите название мезоцикла</label>
+                            <label className='mb-1'>Введите название мезоцикла</label>
                             <input
                                 type="text"
                                 id="name"
                                 name="name"
                                 value={mesocycleData.name}
                                 onChange={(e)=>handleChangeMesocycle(e)}
-                                className={`form-control bg-dark text-light rounded-0 input-custom-exercise mt-1 ${mesocycleData.error && 'is-invalid'}`}
+                                className={`form-control input-custom text-light rounded-0 mt-1 ${mesocycleData.error && 'is-invalid'}`}
                                 placeholder=""
                                 required
                             />
@@ -299,7 +298,7 @@ const CreateMesocyclePage = () => {
                     show={isOpenExerciseForm}   
                     onHide={() => setIsOpenExerciseForm(false)}
                 >
-                    <Modal.Body className='bg-dark'>
+                    <Modal.Body className='bg-component'>
                         <CustomExerciseForm handleCancel={() => setIsOpenExerciseForm(false)} />
                     </Modal.Body>
                 </Modal>

@@ -5,7 +5,7 @@ import './header.css';
 const Sidebar = () => {
     return (
         <aside className="sidebar">
-            <h5 className='mb-4'>HYPER-APP</h5>
+            <h4 className='p-3'>HYPER-APP</h4>
             <MenuHeader />
         </aside>
     );

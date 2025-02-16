@@ -17,3 +17,13 @@
     border-color: #2e7d32; /* Тёмно-зелёная граница */
     color: #a5d6a7; /* Светло-зелёный текст */
 }
+
+
+.table tbody tr {
+  height: auto; /* Это позволяет строкам подстраиваться под содержимое */
+}
+
+.table tbody td {
+  position: relative;
+  vertical-align: bottom; /* Это выравнивает содержимое по нижнему краю ячейки */
+}

@@ -52,7 +52,7 @@ export const CustomExercisesPage = () => {
                 show={isOpenForm}   
                 onHide={() => setIsOpenForm(false)}
             >
-                <Modal.Body className='bg-dark'>
+                <Modal.Body className='bg-component'>
                     <CustomExerciseForm handleCancel={() => setIsOpenForm(false)} />
                 </Modal.Body>
             </Modal>

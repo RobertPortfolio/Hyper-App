@@ -54,14 +54,13 @@ const TemplatesPage = () => {
                 />
             </div>
 
-            <div>
+            <div className="overflow-auto" style={{ maxHeight: 'calc(100vh - 160px)' }}>
                 {templatesTypeIsCustom && templates.filter(template => template.isCustom).length === 0 && (
                     <div className='alert alert-primary'>Список пользовательских шаблонов пуст</div>
                 )}
                 {templates.map((template) => 
                     template.isCustom === templatesTypeIsCustom && (
                         <div key={template._id}>
-
                             <TemplatesListItem 
                                 template={template} />
                         </div>

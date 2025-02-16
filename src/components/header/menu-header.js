@@ -1,52 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const MenuHeader = ({ handleToggle }) => {
+const NavItem = ({ path, icon, label, onClick, isActive }) => (
+    <Link to={path} className={`mobile-header-li text-light `} onClick={onClick}>
+        <li className={`px-3 py-2 nav-item ${isActive ? 'bg-custom-primary' : ''}`}>
+            <i className={`fa ${icon} me-3 text-light icon-fixed-width`}></i>
+            {label}
+        </li>
+    </Link>
+);
 
+const MenuHeader = ({ handleToggle }) => {
     const { user } = useSelector((state) => state.user);
+    const location = useLocation();
+
+    const NAV_ITEMS = [
+        { path: '/current-workout', icon: 'fa-dumbbell', label: 'Текущая тренировка' },
+        { path: '/mesocycles', icon: 'fa-book', label: 'Мезоциклы' },
+        { path: '/templates', icon: 'fa-drafting-compass', label: 'Шаблоны' },
+        { path: '/custom-exercises', icon: 'fa-user-edit', label: 'Пользовательские упражнения' },
+        { path: '/plan-mesocycle', icon: 'fa-plus-circle', label: 'Составить новый мезоцикл' },
+    ];
 
     return (
         <ul className='list-unstyled'>
-            <li className='mb-3 d-flex align-items-center'>
-                <i className="fa fa-dumbbell me-3 text-light icon-fixed-width"></i>
-                <Link to="/current-workout" className='mobile-header-li text-light' onClick={handleToggle}>
-                    Текущая тренировка
-                </Link>
-            </li>
-            <li className='mb-3 d-flex align-items-center'>
-                <i className="fa fa-book me-3 text-light icon-fixed-width"></i>
-                <Link to="/mesocycles" className='mobile-header-li text-light' onClick={handleToggle}>
-                    Мезоциклы
-                </Link>
-            </li>
-            <li className='mb-3 d-flex align-items-center'>
-                <i className="fa fa-drafting-compass me-3 text-light icon-fixed-width"></i>
-                <Link to="/templates" className='mobile-header-li text-light' onClick={handleToggle}>
-                    Шаблоны
-                </Link>
-            </li>
-            <li className='mb-3 d-flex align-items-center'>
-                <i className="fa fa-user-edit me-3 text-light icon-fixed-width"></i>
-                <Link to="/custom-exercises" className='mobile-header-li text-light' onClick={handleToggle}>
-                    Пользовательские упражнения
-                </Link>
-            </li>
-            <li className='mb-3 d-flex align-items-center'>
-                <i className="fa fa-plus-circle me-3 text-light icon-fixed-width"></i>
-                <Link to="/plan-mesocycle" className='mobile-header-li text-light' onClick={handleToggle}>
-                    Составить новый мезоцикл
-                </Link>
-            </li>
-            {user && 
-            <li className='mb-3 d-flex align-items-center'>
-                <i className="fa-solid fa-right-from-bracket me-3 text-light icon-fixed-width"></i>
-                <Link to="/logout" className='mobile-header-li text-light' onClick={handleToggle}>
-                    Выйти
-                </Link>
-            </li>}
+            {NAV_ITEMS.map(item => (
+                <NavItem key={item.path} {...item} onClick={handleToggle} isActive={location.pathname.startsWith(item.path)} />
+            ))}
+            {user && (
+                <NavItem path='/logout' icon='fa-solid fa-right-from-bracket' label='Выйти' onClick={handleToggle} isActive={location.pathname === '/logout'} />
+            )}
         </ul>
-    )
-}
+    );
+};
 
 export default MenuHeader;
