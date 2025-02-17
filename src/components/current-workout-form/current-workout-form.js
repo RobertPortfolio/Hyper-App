@@ -118,10 +118,10 @@ const CurrentWorkoutForm = () => {
                             <OptionsMenu
                                 options={[
                                     {
-                                        label: 'К следующему дню',
-                                        action: handleToNextDay,
-                                        className: 'text-primary',
-                                        icon: 'fa fa-arrow-right',
+                                        label: 'Добавить упражнение',
+                                        action: () => setIsOpenNewExerciseForm(true),
+                                        className: 'text-light',
+                                        icon: 'fa fa-add',
                                     },
                                     {
                                         label: 'Открыть календарь',
@@ -130,10 +130,10 @@ const CurrentWorkoutForm = () => {
                                         icon: 'fa fa-calendar',
                                     },
                                     {
-                                        label: 'Добавить упражнение',
-                                        action: () => setIsOpenNewExerciseForm(true),
-                                        className: 'text-light',
-                                        icon: 'fa fa-add',
+                                        label: 'К следующему дню',
+                                        action: handleToNextDay,
+                                        className: 'text-primary',
+                                        icon: 'fa fa-arrow-right',
                                     },
                                 ]}
                                 direction='right'

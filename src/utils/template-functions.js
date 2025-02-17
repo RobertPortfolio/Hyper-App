@@ -133,3 +133,34 @@ export const handleDeleteExercise = (setTemplateData, dayIndex, exerciseIndex) =
         };
     });
 };
+
+// Переместить упражнение
+export const handleMoveExercise = (setTemplateData, dayIndex, exerciseIndex, direction) => {
+    setTemplateData((prevState) => {
+        const updatedDays = prevState.days.map((day, index) => {
+            if (index === dayIndex) {
+                const exercises = [...day.exercises];
+                const newIndex = direction === 'up' ? exerciseIndex - 1 : exerciseIndex + 1;
+
+                if (newIndex < 0 || newIndex >= exercises.length) {
+                    return day; // Если за границами, не делаем ничего
+                }
+
+                // Меняем местами элементы
+                const [movedExercise] = exercises.splice(exerciseIndex, 1);
+                exercises.splice(newIndex, 0, movedExercise);
+
+                return {
+                    ...day,
+                    exercises,
+                };
+            }
+            return day;
+        });
+
+        return {
+            ...prevState,
+            days: updatedDays,
+        };
+    });
+};

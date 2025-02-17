@@ -27,8 +27,8 @@ const OptionsMenu = ({ options, direction, header, icon }) => {
   }, [isOpen]);
 
   return (
-    <div className="options-menu position-relative width-20 text-center" ref={menuRef}>
-      <button className="w-100" onClick={toggleMenu}>
+    <div className="position-relative text-center" ref={menuRef}>
+      <button className="options-menu" onClick={toggleMenu}>
         <i className="fa-solid fa-ellipsis-v"></i>
       </button>
       {isOpen && (

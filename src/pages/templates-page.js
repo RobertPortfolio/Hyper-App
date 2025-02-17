@@ -56,7 +56,7 @@ const TemplatesPage = () => {
 
             <div className="overflow-auto" style={{ maxHeight: 'calc(100vh - 160px)' }}>
                 {templatesTypeIsCustom && templates.filter(template => template.isCustom).length === 0 && (
-                    <div className='alert alert-primary'>Список пользовательских шаблонов пуст</div>
+                    <div className='text-secondary mt-3'>Здесь будут созданные вами шаблоны тренировочных планов</div>
                 )}
                 {templates.map((template) => 
                     template.isCustom === templatesTypeIsCustom && (

@@ -79,7 +79,6 @@ const CustomTemplateForm = () => {
             authorId: '1',
         };
         
-        console.log(updatedTemplateData);
         await dispatch(postTemplateThunk(updatedTemplateData));
         if (status === 'succeeded') {
             setModalSubmit(false);

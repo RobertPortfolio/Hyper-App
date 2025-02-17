@@ -145,6 +145,7 @@ const CreateMesocyclePage = () => {
             days: templateData.days.map((day) => ({
                 dayId: day.dayId,
                 isCurrent: false,
+                endDate: '',
                 isDone: false,
                 exercises: day.exercises.map((exercise) => ({
                     targetMuscleGroupId: exercise.targetMuscleGroupId,

@@ -22,7 +22,7 @@ export const CustomExercisesPage = () => {
 
     return ( 
         <div className='p-3'>
-            <div className='d-flex justify-content-between align-items-center mb-3'>
+            <div className='d-flex justify-content-between align-items-center mb-4'>
                 <h2>Кастомные упражнения</h2>
                 <button 
                     className="btn-main d-flex align-items-center"  
@@ -32,7 +32,7 @@ export const CustomExercisesPage = () => {
             </div>
 
             {exercises.filter(exercise => exercise.isCustom).length === 0 && (
-                <div className='alert alert-primary'>Список пользовательских упражнений пуст</div>
+                <div className='text-secondary'>Список пользовательских упражнений пуст</div>
             )}
             {exercises.map((exercise) => 
                 exercise.isCustom === true && (

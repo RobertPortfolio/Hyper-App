@@ -15,7 +15,7 @@ const MesocyclesPage = () => {
     return (
         <div className='p-3'>
             <div className='d-flex justify-content-between align-items-center mb-4'>
-                <h2>Мезоциклы</h2>
+                <h2>Тренировочные планы</h2>
                 <Link
                     to='/plan-mesocycle'
                     className="btn-main d-flex align-items-center text-decoration-none"  

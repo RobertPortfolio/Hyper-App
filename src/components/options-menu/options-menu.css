@@ -7,6 +7,22 @@
   overflow: hidden; /* Предотвращает выход содержимого за края */
 }
 
-.width-20 {
+.options-menu {
   width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.options-menu:hover {
+  background-color: rgba(200, 200, 200, 0.2); /* Светлый полупрозрачный кружок */
+  cursor: pointer;
+}
+
+.options-menu:focus {
+  background-color: rgba(200, 200, 200, 0.2); /* Светлый полупрозрачный кружок */
+  cursor: pointer;
 }

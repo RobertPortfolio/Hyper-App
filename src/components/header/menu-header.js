@@ -17,10 +17,10 @@ const MenuHeader = ({ handleToggle }) => {
 
     const NAV_ITEMS = [
         { path: '/current-workout', icon: 'fa-dumbbell', label: 'Текущая тренировка' },
-        { path: '/mesocycles', icon: 'fa-book', label: 'Мезоциклы' },
+        { path: '/mesocycles', icon: 'fa-book', label: 'Тренировочные планы' },
         { path: '/templates', icon: 'fa-drafting-compass', label: 'Шаблоны' },
         { path: '/custom-exercises', icon: 'fa-user-edit', label: 'Пользовательские упражнения' },
-        { path: '/plan-mesocycle', icon: 'fa-plus-circle', label: 'Составить новый мезоцикл' },
+        { path: '/plan-mesocycle', icon: 'fa-plus-circle', label: 'Новый тренировочный план' },
     ];
 
     return (

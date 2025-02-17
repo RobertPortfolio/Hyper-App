@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser, resetError } from '../redux/slices/user-slice';
 import ErrorToast from '../components/error-toast';
+import { Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const LoginPage = () => {
         emailOrUsername: '',
         password: '',
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleResetError = () => {
         dispatch(resetError());
@@ -53,9 +55,9 @@ const LoginPage = () => {
                 </div>
 
                 {/* Password */}
-                <div className="form-group mt-2">
+                <div className="form-group mt-2 position-relative">
                     <input
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
@@ -64,6 +66,9 @@ const LoginPage = () => {
                         autoComplete="current-password"
                         required
                     />
+                    <span className="position-absolute top-50 end-0 translate-middle-y me-3" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+                        {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                    </span>
                 </div>
 
                 {/* Submit Button */}

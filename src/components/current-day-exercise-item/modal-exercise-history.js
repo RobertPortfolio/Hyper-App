@@ -44,18 +44,19 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
                                             mesocycleName: mesocycle.name,
                                             weekNumber: week.number,
                                             dayId: day.dayId,
+                                            endDate: day.endDate,
                                         }))
                                 )
                         )
                     )
-                    .map(({ exerciseItem, mesocycleName, weekNumber, dayId }, index) => (
+                    .map(({ exerciseItem, mesocycleName, weekNumber, dayId, endDate }, index) => (
                         <div key={index} className='mb-2 border p-2 bg-custom-secondary rounded'>
 
                             <div className="font-size-secondary text-secondary">
-                                {mesocycleName} 
+                                {mesocycleName} - Неделя {weekNumber}
                             </div>
-                            <div className='mb-1 text-secondary'>
-                                Неделя {weekNumber} • {getName(daysList, dayId)}
+                            <div className='mb-1 font-size-secondary text-secondary'>
+                                {getName(daysList, dayId)} - {endDate}
                             </div>
 
                             

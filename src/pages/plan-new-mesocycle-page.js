@@ -27,7 +27,7 @@ const PlanNewMesocyclePage = () => {
         <div className='p-3'>
             <div className='d-flex'>
                 <div className='position-relative mb-4'>
-                    <h2>Составление мезоцикла</h2>
+                    <h2>Составление тренировочного плана</h2>
                     <div className="position-absolute top-0 start-100 translate-middle-y">
                         <TooltipExplanation 
                             label=''
@@ -48,7 +48,7 @@ const PlanNewMesocyclePage = () => {
                 <button 
                     onClick={handleToCreateMesoFromScratch}
                     className='w-100 text-center'>
-                    Создать мезоцикл с нуля
+                    Спланировать с нуля
                 </button>
             </div>
             

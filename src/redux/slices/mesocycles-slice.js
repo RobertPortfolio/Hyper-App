@@ -99,6 +99,16 @@ const generateMongoObjectId = () => {
           Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0')).padStart(24, '0');
 };
 
+const getDate = () => {
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString('ru-RU', {
+      month: 'short', // Короткое название месяца (например, Dec)
+      day: 'numeric', // Число
+      year: 'numeric' // Год
+  });
+  return formattedDate;
+}
+
 const getEmptySet = (weight='', type='straight') => {
   return {
       weight: weight,
@@ -181,13 +191,7 @@ const mesocyclesSlice = createSlice({
             );
             // Обновляем поле isDone текущего мезоцикла
             if (allDaysDone) {
-              const now = new Date();
-              const formattedDate = now.toLocaleDateString('ru-RU', {
-                  month: 'short', // Короткое название месяца (например, Dec)
-                  day: 'numeric', // Число
-                  year: 'numeric' // Год
-              });
-              currentMesocycle.endDate = formattedDate;
+              currentMesocycle.endDate = getDate();
             }
             currentMesocycle.isDone = allDaysDone;
         }
@@ -198,7 +202,10 @@ const mesocyclesSlice = createSlice({
         if (day) {
           day.exercises = day.exercises.filter(exercise => exercise._id !== exerciseId);
         }
-        day.isDone = allSetsDone(day);
+        if (allSetsDone(day)) {
+          day.isDone = true;
+          day.endDate = getDate();
+        }
         mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       replaceExercise(state, action) {
@@ -216,14 +223,20 @@ const mesocyclesSlice = createSlice({
           exercise.jointPainRate = '';
           exercise.workloadRate = '';
         }
-        day.isDone = allSetsDone(day);
+        if (allSetsDone(day)) {
+          day.isDone = true;
+          day.endDate = getDate();
+        }
         mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       addExercise(state, action) {
         const { targetMuscleGroupId, exerciseId, notes } = action.payload;
         const day = findDayById(state.mesocycles, state.currentDayId);
         day.exercises = [...day.exercises, getEmptyExercise(targetMuscleGroupId, exerciseId, notes) ]
-        day.isDone = allSetsDone(day);
+        if (allSetsDone(day)) {
+          day.isDone = true;
+          day.endDate = getDate();
+        }
         mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       moveUpExercise(state, action) {
@@ -260,7 +273,10 @@ const mesocyclesSlice = createSlice({
                   set[name] = value;
               }
           }
-          day.isDone = allSetsDone(day);
+          if (allSetsDone(day)) {
+            day.isDone = true;
+            day.endDate = getDate();
+          }
           mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       deleteSet(state, action) {
@@ -270,7 +286,10 @@ const mesocyclesSlice = createSlice({
           if (exercise) {
               exercise.sets = exercise.sets.filter(set => set._id !== setId);
           }
-          day.isDone = allSetsDone(day);
+          if (allSetsDone(day)) {
+            day.isDone = true;
+            day.endDate = getDate();
+          }
           mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       addSet(state, action) {
@@ -281,7 +300,10 @@ const mesocyclesSlice = createSlice({
               // Добавляем новый набор в массив sets
               exercise.sets.push(getEmptySet());
           }
-          day.isDone = allSetsDone(day);
+          if (allSetsDone(day)) {
+            day.isDone = true;
+            day.endDate = getDate();
+          }
           mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       addSetBelow(state, action) {
@@ -297,7 +319,10 @@ const mesocyclesSlice = createSlice({
                 exercise.sets.splice(prevSetIndex + 1, 0, getEmptySet(prevSet.weight, prevSet.type));
               }
           }
-          day.isDone = allSetsDone(day);
+          if (allSetsDone(day)) {
+            day.isDone = true;
+            day.endDate = getDate();
+          }
           mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
       },
       applyNotesToExercisesInCurrentMesocycle(state, action) {
