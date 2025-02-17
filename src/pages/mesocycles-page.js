@@ -20,7 +20,7 @@ const MesocyclesPage = () => {
                     to='/plan-mesocycle'
                     className="btn-main d-flex align-items-center text-decoration-none"  
                 >
-                    <i className="fa fa-add me-2" />Создать
+                    <i className="fa fa-add me-2" />Новый
                 </Link>
             </div>
 

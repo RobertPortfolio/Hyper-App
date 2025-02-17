@@ -25,18 +25,8 @@ const PlanNewMesocyclePage = () => {
 
     return(
         <div className='p-3'>
-            <div className='d-flex'>
-                <div className='position-relative mb-4'>
-                    <h2>Составление тренировочного плана</h2>
-                    <div className="position-absolute top-0 start-100 translate-middle-y">
-                        <TooltipExplanation 
-                            label=''
-                            explanation='Составьте мезоцикл (рассчитанный на несколько недель тренировочный план) с нуля или на основе базового или вашего шаблона.'
-                        />
-                    </div>
-                </div>
-            </div>  
-            
+            <h2 className='mb-4'>Составление плана тренировок</h2>
+            <div className='text-secondary font-size-secondary mb-3'>Составьте мезоцикл (рассчитанный на несколько недель тренировочный план) с нуля или на основе базового или вашего шаблона.</div>
             <div className='d-flex mb-2'>
                 <button 
                     onClick={handleToTemplates}
@@ -54,7 +44,7 @@ const PlanNewMesocyclePage = () => {
             
             {templates.some(template => template.isCustom) && (
                 <div>
-                    <div className='bg-component mb-0 px-3 py-2 mt-4'>Кастомные шаблоны</div>
+                    <div className='bg-component mb-0 px-3 py-2 mt-4'>Ваши шаблоны</div>
                     {templates.map((template) =>
                         template.isCustom && (
                             <div key={template._id}>

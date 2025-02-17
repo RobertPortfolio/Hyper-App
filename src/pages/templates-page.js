@@ -41,7 +41,7 @@ const TemplatesPage = () => {
                     </div>
                 </div>
                 <button 
-                    className="btn-main d-flex align-items-center"  
+                    className="btn-secondary d-flex align-items-center"  
                     onClick={handleNavigateToCreateTemplate}>
                     <i className="fa fa-add me-2" />Добавить
                 </button>
