@@ -7,12 +7,8 @@ import Spinner from '../spinner';
 const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHistoryOpen }) => {
 
     const { mesocycles } = useSelector((state) => state.mesocycles);
-    const { exercises, status } = useSelector((state) => state.exercises);
+    const { exercises } = useSelector((state) => state.exercises);
     const exerciseData = exercises.find((exerciseItem) => exerciseItem._id === exercise.exerciseId);
-
-    if(status === 'loading' || status === 'idle') {
-        return <Spinner />
-    }
 
     return(
         <Modal 
@@ -22,7 +18,7 @@ const ModalExerciseHistory = ({ exercise, isExerciseHistoryOpen, setIsExerciseHi
             <Modal.Header closeButton closeVariant='white' className="bg-component border-0">
                 <div>
                     <div>История упражнения</div>
-                    <div className="font-size-secondary text-secondary">{exerciseData.name}</div>
+                    <div className="font-size-secondary text-secondary">{exerciseData && exerciseData.name}</div>
                 </div>
             </Modal.Header>
             <Modal.Body className='bg-component'>

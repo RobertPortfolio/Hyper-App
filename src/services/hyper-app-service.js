@@ -279,3 +279,108 @@ export const changeCurrentMesocycle = async (id, userId) => {
         throw error; // Пробрасываем ошибку дальше
     }
 }
+
+export const changeCurrentDay = async (id, dayId) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/change-current-day/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dayId }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to change current day');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error changing current day:', error.message);
+        throw error;
+    }
+}
+
+export const deleteExerciseFromCurrentDay = async (id, exerciseId) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/delete-exercise/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete exercise');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error deleting exercise:', error.message);
+        throw error;
+    }
+}
+
+export const addExerciseToCurrentDay = async (id, targetMuscleGroupId, exerciseId, notes) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/add-exercise/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ targetMuscleGroupId, exerciseId, notes }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add exercise');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error adding exercise:', error.message);
+        throw error;
+    }
+}
+
+export const replaceExerciseInCurrentDay = async (id, exerciseId, targetMuscleGroupId, newExerciseId, notes) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/replace-exercise/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId, targetMuscleGroupId, newExerciseId, notes }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to replace exercise');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error replacing exercise:', error.message);
+        throw error;
+    }
+}
+
+export const moveExerciseInCurrentDay = async (id, exerciseId, direction) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/move-exercise/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId, direction }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to move exercise');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error moving exercise:', error.message);
+        throw error;
+    }
+}

@@ -5,19 +5,21 @@ import { Collapse } from 'react-bootstrap';
 import { FaRegCalendarAlt, FaCalendarCheck } from 'react-icons/fa';  
 import { days as daysList, getName } from '../../assets/assets';
 import CurrentDayExerciseItem from '../current-day-exercise-item';
-import { selectCurrentDay, updateMesocycleThunk, selectCurrentMesocycles, selectCurrentWeek, changeCurrentDay } from '../../redux/slices/mesocycles-slice';
+import { selectCurrentMesocycle, selectCurrentDay, selectCurrentWeek, changeCurrentDayThunk, updateMesocycleThunk } from '../../redux/slices/mesocycles-slice';
 import Calendar from '../calendar/calendar';
 import OptionsMenu from '../options-menu';
 import ModalAddExercise from './modal-add-exercise';
 import TooltipExplanation from '../tooltip-explanation';
 import ErrorToast from '../error-toast';
+import SpinnerSmall from '../spinner-small';
 import './current-workout-form.css';
 
 const CurrentWorkoutForm = () => {
 
     const currentDay = useSelector(selectCurrentDay);
-    const currentMesocycle = useSelector(selectCurrentMesocycles);
+    const currentMesocycle = useSelector(selectCurrentMesocycle);
     const currentWeek = useSelector(selectCurrentWeek);
+    const { changeCurrentDayLoading, addExerciseLoading } = useSelector((state)=>state.mesocycles.loadingElements);
 
     const dispatch = useDispatch();
 
@@ -40,30 +42,29 @@ const CurrentWorkoutForm = () => {
     const handleToNextDay = () => {
         // Находим текущий день и его индекс в массиве дней недели
         const currentDayIndex = findDayIndex();
-    
+        
         // Проверяем, есть ли следующий день в текущей неделе
         if (currentDayIndex < currentWeek.days.length - 1) {
             // Если есть, переходим к следующему дню
             const nextDayId = currentWeek.days[currentDayIndex + 1]._id;
-            dispatch(changeCurrentDay(nextDayId));
+            dispatch(changeCurrentDayThunk({id: currentMesocycle._id, dayId: nextDayId}));
         } else {
             // Если текущая неделя завершена, проверяем, есть ли следующая неделя
             if (currentWeek.number < currentMesocycle.weeks.length) {
                 const nextWeek = currentMesocycle.weeks[currentWeek.number];
                 // Переходим на первый день следующей недели
                 const nextDayId = nextWeek.days[0]._id;
-                dispatch(changeCurrentDay(nextDayId));
+                dispatch(changeCurrentDayThunk({id: currentMesocycle._id, dayId: nextDayId}));
             } else {
                 // Если недели закончились
                 setErrorInfo('Текущий день последний в мезоцикле');
                 setOpenCalendar(true);
-                
             }
         }
     };
 
-    const handleSave = async () => {
-        await dispatch(updateMesocycleThunk({ id: currentMesocycle._id, data: currentMesocycle }));
+    const handleSave = () => {
+        dispatch(updateMesocycleThunk({ id: currentMesocycle._id }));
     }
 
     if (!currentDay) {
@@ -95,7 +96,7 @@ const CurrentWorkoutForm = () => {
                         />
                         <button
                             className='btn-main ms-3'
-                            onClick={handleSave}>
+                            onClick={()=>handleSave(null)}>
                             Сохранить
                         </button>
                     </div>
@@ -105,7 +106,7 @@ const CurrentWorkoutForm = () => {
                 
                 <div className='d-flex justify-content-between align-items-center'>
                     <h5 className='m-0'>
-                        Неделя {currentWeek.number} День {findDayIndex() + 1} {getName(daysList, currentDay.dayId)}
+                        Неделя {currentWeek.number} День {findDayIndex() + 1} {getName(daysList, currentDay.dayId)} {(changeCurrentDayLoading || addExerciseLoading) && <SpinnerSmall />}
                     </h5>
                     <div className='d-flex align-items-center'>
                         <div className='me-3'>
@@ -133,7 +134,8 @@ const CurrentWorkoutForm = () => {
                                         label: 'К следующему дню',
                                         action: handleToNextDay,
                                         className: 'text-primary',
-                                        icon: 'fa fa-arrow-right',
+                                        icon: changeCurrentDayLoading ? 'fas fa-circle-notch fa-spin' : 'fa fa-arrow-right',
+                                        disabled: changeCurrentDayLoading,
                                     },
                                 ]}
                                 direction='right'
@@ -152,7 +154,6 @@ const CurrentWorkoutForm = () => {
                     </div>
                 </Collapse>
             </div>
-            
             {currentDay.exercises.map((exercise, index) => {
                 const previousExerciseTargetMuscleGroupId = index > 0 ? currentDay.exercises[index - 1].targetMuscleGroupId : null;
                 return (

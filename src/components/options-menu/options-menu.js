@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './options-menu.css';
 
-const OptionsMenu = ({ options, direction, header, icon }) => {
+const OptionsMenu = ({ options, direction, header }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -45,6 +45,7 @@ const OptionsMenu = ({ options, direction, header, icon }) => {
                   option.action();
                   toggleMenu();
                 }}
+                disabled={option.disabled}
               >
                 <i className={`me-2 width-20 text-center ${option.icon || 'fa-solid fa-cog'}`}></i> {/* Дефолтная иконка */}
                 <span>{option.label}</span>

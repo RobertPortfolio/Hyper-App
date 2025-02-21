@@ -9,6 +9,7 @@ const CustomExerciseForm = ({ handleCancel }) => {
     const dispatch = useDispatch();
     const { status, error } = useSelector((state) => state.exercises);
     const { user } = useSelector((state) => state.user);
+    
 
     const [formData, setFormData] = useState({
         name: '',
@@ -42,7 +43,6 @@ const CustomExerciseForm = ({ handleCancel }) => {
             setErrors(newErrors);
             return;
         }
-    
         await dispatch(postExerciseThunk(formData));
         if (status === 'succeeded') {
             handleCancel();

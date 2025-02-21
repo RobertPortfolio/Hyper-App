@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import InputSetType from './input-set-type';
 import OptionsMenu from '../options-menu';
-import { changeSet, deleteSet, addSetBelow } from '../../redux/slices/mesocycles-slice';
+import { changeSet, deleteSet, addSetBelow, selectCurrentWeek } from '../../redux/slices/mesocycles-slice';
 
 const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
 
-    const { currentRir } = useSelector((state) => state.mesocycles);
+    const currentWeek = useSelector(selectCurrentWeek);
 
     const [invalidFields, setInvalidFields] = useState({
         weight: false,
@@ -150,7 +150,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                         className={`form-control input-custom text-light text-center rounded-0 ${
                             invalidFields.reps ? 'is-invalid' : ''
                         }`}
-                        placeholder={`${currentRir} RIR`}
+                        placeholder={`${currentWeek.rir} RIR`}
                         required
                     />
                     {set.type === 'myoreps' && <InputSetType label="M" />}

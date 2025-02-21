@@ -1,5 +1,5 @@
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createSelector  } from '@reduxjs/toolkit';
 import { getExercises, addExercise, deleteExercise } from '../../services/hyper-app-service';
 
 export const getExercisesThunk = createAsyncThunk(
@@ -33,6 +33,11 @@ export const deleteExerciseThunk = createAsyncThunk(
       return rejectWithValue(error.message);
     }
   }
+);
+
+export const selectExerciseById = (exerciseId) => createSelector(
+  (state) => state.exercises.exercises, // или другой путь к массиву упражнений
+  (exercises) => exercises.find((exerciseItem) => exerciseItem._id === exerciseId)
 );
 
 const initialState = {

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import Spinner from '../spinner';
 import { muscleGroups } from '../../assets/assets';
-import { addExercise } from '../../redux/slices/mesocycles-slice';
+import { addExerciseThunk, selectCurrentMesocycle } from '../../redux/slices/mesocycles-slice';
 import TooltipExplanation from '../tooltip-explanation';
 
 const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) => {
@@ -11,13 +11,16 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
     const dispatch = useDispatch();
 
     const { exercises, status } = useSelector((state) => state.exercises);
+    const { addExerciseLoading } = useSelector((state) => state.mesocycles.loadingElements);
+    const currentMesocycle = useSelector(selectCurrentMesocycle);
 
     const [ muscleGroup, setMuscleGroup ] = useState(null);
 
-    const handleAddExercise = (exerciseId) => {
-        dispatch(addExercise({
+    const handleAddExercise = (exerciseId) => { 
+        dispatch(addExerciseThunk({
+            id: currentMesocycle._id,
             targetMuscleGroupId: String(muscleGroup),
-            exerciseId: exerciseId,
+            exerciseId,
             notes: exercises.find((exerciseItem) => exerciseItem._id === exerciseId)?.notes ?? '',
         }));
         setIsOpenNewExerciseForm(false);
@@ -60,7 +63,10 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
                             .filter((exerciseItem) => Number(exerciseItem.targetMuscleGroupId) === muscleGroup)
                             .map((filteredExercise) => (
                                 <div key={filteredExercise._id} className='mb-2'>
-                                    <button className='text-primary text-decoration-underline' onClick={()=>handleAddExercise(filteredExercise._id)}>
+                                    <button 
+                                        className='text-primary text-decoration-underline' 
+                                        onClick={()=>handleAddExercise(filteredExercise._id)}
+                                        disabled={addExerciseLoading}>
                                         {filteredExercise.name}
                                     </button>
                                 </div>

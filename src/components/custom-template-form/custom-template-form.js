@@ -122,7 +122,7 @@ const CustomTemplateForm = () => {
             >
                 <Modal.Body className='bg-component'>
                     <div className="modal-body">
-                        <label>Введите название шаблона *</label>
+                        <label>Введите название шаблона</label>
                         <input
                             type="text"
                             id="name"

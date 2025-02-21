@@ -2,22 +2,30 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { muscleGroups, equipment, getName } from '../../assets/assets';
-import { addSet, deleteExercise, replaceExercise, moveUpExercise, moveDownExercise } from '../../redux/slices/mesocycles-slice';
+import { addSet, deleteExerciseThunk, replaceExerciseThunk, moveExerciseThunk, selectCurrentMesocycle, selectCurrentDay } from '../../redux/slices/mesocycles-slice';
+import { selectExerciseById } from '../../redux/slices/exercises-slice';
 import OptionsMenu from '../options-menu';
 import NotesExerciseForm from '../notes-exercise-form/notes-exercise-form';
 import CurrentDayExerciseSetItem from './current-day-exercise-set-item';
 import ModalExerciseHistory from './modal-exercise-history';
 import './current-day-exercise-item.css';
+import ConfirmModal from '../confirm-modal';
+import SpinnerSmall from '../spinner-small';
 
 const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId }) => {
 
     const { exercises } = useSelector((state) => state.exercises);
+    const { deleteExerciseLoading, replaceExerciseLoading, moveExerciseLoading } = useSelector((state) => state.mesocycles.loadingElements);
+    const currentMesocycle = useSelector(selectCurrentMesocycle);
+    const currentDay = useSelector(selectCurrentDay);
 
     const dispatch = useDispatch();
 
-    const exerciseData = exercises.find((exerciseItem) => exerciseItem._id === exercise.exerciseId);
+    const exerciseData = useSelector(selectExerciseById(exercise.exerciseId));
 
     const [ isNotesFormOpen, setIsNotesFormOpen ] = useState(false);
+
+    const [ isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
     const [ isOpenExerciseList, setIsOpenExerciseList ] = useState(false);
 
@@ -34,24 +42,31 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
     }
 
     const handleDeleteExercise = () => {
-        dispatch(deleteExercise({exerciseId: exercise._id}))
+        dispatch(deleteExerciseThunk({id: currentMesocycle._id, exerciseId: exercise._id}));
     }
 
     const handleReplaceExercise = (newExerciseId) => {
-        dispatch(replaceExercise({ 
+        dispatch(replaceExerciseThunk({ 
+            id: currentMesocycle._id,
             exerciseId: exercise._id, 
+            targetMuscleGroupId: exercise.targetMuscleGroupId,
             newExerciseId, 
-            exercisesList: exercises
+            notes: exercises.find((exerciseItem) => exerciseItem._id === newExerciseId)?.notes ?? '',
         }))
         setIsOpenExerciseList(false);
     }
 
-    const handleMoveUpExercise = () => {
-        dispatch(moveUpExercise({exerciseId: exercise._id}))
-    }
-
-    const handleMoveDownExercise = () => {
-        dispatch(moveDownExercise({exerciseId: exercise._id}))
+    const handleMoveExercise = (direction) => {
+        const index = currentDay.exercises.findIndex(ex => ex._id === exercise._id);
+        if (direction === 'up' && index > 0) {
+            // Если перемещаем вверх и упражнение не на первой позиции 
+            dispatch(moveExerciseThunk({id: currentMesocycle._id, exerciseId: exercise._id, direction }));
+        } else if (direction === 'down' && index < currentDay.exercises.length - 1) {
+            // Если перемещаем вниз и упражнение не на последней позиции
+            dispatch(moveExerciseThunk({id: currentMesocycle._id, exerciseId: exercise._id, direction }));
+        } else {
+            return
+        }
     }
 
     return(
@@ -64,12 +79,20 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
             <div className='d-flex justify-content-between align-items-center mt-1'>
                 <div>
                     {exerciseData ? 
-                        <div>{exerciseData.name}</div> : 
-                        <div>Unknown exercise</div>
+                        <span>{exerciseData.name} </span> : 
+                        <span>Unknown exercise </span>
+                    }
+                    {(deleteExerciseLoading === exercise._id || 
+                        replaceExerciseLoading===exercise._id ||
+                        moveExerciseLoading===exercise._id) 
+                        && <SpinnerSmall />
                     }
                 </div>
                 <div className='me-2'>
-                    <OptionsMenu
+                    {(deleteExerciseLoading !== exercise._id && 
+                      replaceExerciseLoading !== exercise._id && 
+                      moveExerciseLoading !== exercise._id
+                    ) && <OptionsMenu
                         options={[
                             {
                                 label: 'Добавить подход',
@@ -91,13 +114,13 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                             },
                             {
                                 label: 'Переместить выше',
-                                action: handleMoveUpExercise,
+                                action: ()=>handleMoveExercise('up'),
                                 className: 'text-light',
                                 icon: 'fa fa-arrow-up',
                             },
                             {
                                 label: 'Переместить ниже',
-                                action: handleMoveDownExercise,
+                                action: ()=>handleMoveExercise('down'),
                                 className: 'text-light',
                                 icon: 'fa fa-arrow-down',
                             },
@@ -109,14 +132,14 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                             },
                             {
                                 label: 'Удалить упражнение',
-                                action: handleDeleteExercise,
+                                action: ()=>setIsConfirmModalOpen(true),
                                 className: 'text-danger',
                                 icon: 'fa fa-trash',
                             },
                         ]}
                         direction='right'
                         header='Упражнение'
-                    />
+                    />}
                 </div>
                 
             </div>
@@ -149,7 +172,6 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                 
             </div>
 
-
             {exercise.sets.map((set) => 
                 <div key={set._id}>
                     <CurrentDayExerciseSetItem
@@ -158,6 +180,12 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                 </div>
             )}
 
+            <ConfirmModal
+                show={isConfirmModalOpen} 
+                onClose={()=>setIsConfirmModalOpen(false)} 
+                onConfirm={handleDeleteExercise}
+                title='Подтвердите действие' 
+                message={`Удалить упражнение ${exerciseData && exerciseData.name}?`}/>
 
             <Modal 
                 show={isNotesFormOpen}   

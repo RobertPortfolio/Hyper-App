@@ -1,18 +1,19 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeCurrentDay, selectCurrentMesocycles } from '../../redux/slices/mesocycles-slice';
+import { changeCurrentDayThunk, selectCurrentMesocycle } from '../../redux/slices/mesocycles-slice';
 import { days } from '../../assets/assets';
 import './calendar.css';
 
 const Calendar = () => {
 
-    const currentMesocycle = useSelector(selectCurrentMesocycles);
+    const currentMesocycle = useSelector(selectCurrentMesocycle);
+    const { changeCurrentDayLoading } = useSelector((state) => state.mesocycles.loadingElements);
 
     const dispatch = useDispatch();
 
     const handleChangeCurrentDay = (dayId) => {
-        dispatch(changeCurrentDay(dayId));
-    }
+        dispatch(changeCurrentDayThunk({id: currentMesocycle._id, dayId }));
+    };
 
     return (
         <div className="container">
@@ -26,6 +27,7 @@ const Calendar = () => {
                     {week.days.map((day) => (
                         <button
                         key={day._id}
+                        disabled={changeCurrentDayLoading}
                         onClick={() => handleChangeCurrentDay(day._id)}
                         className={`custom-button ${
                             day.isDone

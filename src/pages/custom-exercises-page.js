@@ -7,6 +7,7 @@ import Spinner from '../components/spinner';
 import ErrorToast from '../components/error-toast';
 import { resetError } from '../redux/slices/exercises-slice';
 
+
 export const CustomExercisesPage = () => {
     const [isOpenForm, setIsOpenForm] = useState(false);
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export const CustomExercisesPage = () => {
     const handleResetError = () => {
         dispatch(resetError());
     };
-    
+
     if(status === 'loading' || status==='idle') {
         return <Spinner />
     }
