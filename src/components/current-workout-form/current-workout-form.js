@@ -5,7 +5,7 @@ import { Collapse } from 'react-bootstrap';
 import { FaRegCalendarAlt, FaCalendarCheck } from 'react-icons/fa';  
 import { days as daysList, getName } from '../../assets/assets';
 import CurrentDayExerciseItem from '../current-day-exercise-item';
-import { selectCurrentMesocycle, selectCurrentDay, selectCurrentWeek, changeCurrentDayThunk, updateMesocycleThunk } from '../../redux/slices/mesocycles-slice';
+import { selectCurrentMesocycle, selectCurrentDay, selectCurrentWeek, changeCurrentDayThunk } from '../../redux/slices/mesocycles-slice';
 import Calendar from '../calendar/calendar';
 import OptionsMenu from '../options-menu';
 import ModalAddExercise from './modal-add-exercise';
@@ -63,9 +63,6 @@ const CurrentWorkoutForm = () => {
         }
     };
 
-    const handleSave = () => {
-        dispatch(updateMesocycleThunk({ id: currentMesocycle._id }));
-    }
 
     if (!currentDay) {
         return (
@@ -90,15 +87,7 @@ const CurrentWorkoutForm = () => {
                         }
                     </div>
                     <div className='d-flex align-items-center'>
-                        <TooltipExplanation 
-                            label=''
-                            explanation='Сохраняйте данные тренировки по окончанию, чтобы не потерять их'
-                        />
-                        <button
-                            className='btn-main ms-3'
-                            onClick={()=>handleSave(null)}>
-                            Сохранить
-                        </button>
+                        
                     </div>
                     
                     

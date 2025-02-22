@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { muscleGroups, equipment, getName } from '../../assets/assets';
-import { addSet, deleteExerciseThunk, replaceExerciseThunk, moveExerciseThunk, selectCurrentMesocycle, selectCurrentDay } from '../../redux/slices/mesocycles-slice';
+import { addSetThunk, deleteExerciseThunk, replaceExerciseThunk, moveExerciseThunk, selectCurrentMesocycle, selectCurrentDay } from '../../redux/slices/mesocycles-slice';
 import { selectExerciseById } from '../../redux/slices/exercises-slice';
 import OptionsMenu from '../options-menu';
 import NotesExerciseForm from '../notes-exercise-form/notes-exercise-form';
@@ -15,7 +15,7 @@ import SpinnerSmall from '../spinner-small';
 const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId }) => {
 
     const { exercises } = useSelector((state) => state.exercises);
-    const { deleteExerciseLoading, replaceExerciseLoading, moveExerciseLoading } = useSelector((state) => state.mesocycles.loadingElements);
+    const { deleteExerciseLoading, replaceExerciseLoading, moveExerciseLoading, addSetLoading } = useSelector((state) => state.mesocycles.loadingElements);
     const currentMesocycle = useSelector(selectCurrentMesocycle);
     const currentDay = useSelector(selectCurrentDay);
 
@@ -36,8 +36,10 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
     }
 
     const handleAddSet = () => {
-        dispatch(addSet({ 
+        dispatch(addSetThunk({ 
+            id: currentMesocycle._id,
             exerciseId: exercise._id, 
+            setId: null,
         }));
     }
 
@@ -84,7 +86,8 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
                     }
                     {(deleteExerciseLoading === exercise._id || 
                         replaceExerciseLoading===exercise._id ||
-                        moveExerciseLoading===exercise._id) 
+                        moveExerciseLoading===exercise._id ||
+                        addSetLoading===exercise._id) 
                         && <SpinnerSmall />
                     }
                 </div>

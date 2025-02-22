@@ -4,6 +4,12 @@
     border: 1px solid #243544;
 }
 
+.input-custom:disabled {
+    background-color: #243544;
+    border: 1px solid #243544;
+    opacity: 1; /* чтобы не уменьшалась прозрачность по умолчанию */
+}
+
 .input-custom:focus {
     background-color: #243544;
     border-color: #66D9D9; /* Светло-серый цвет */

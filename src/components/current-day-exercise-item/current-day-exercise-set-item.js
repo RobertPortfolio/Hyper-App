@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import InputSetType from './input-set-type';
 import OptionsMenu from '../options-menu';
-import { changeSet, deleteSet, addSetBelow, selectCurrentWeek } from '../../redux/slices/mesocycles-slice';
+import SpinnerSmall from '../spinner-small';
+import { changeSet, deleteSetThunk, addSetThunk, selectCurrentWeek, selectCurrentMesocycle, updateSetThunk } from '../../redux/slices/mesocycles-slice';
 
 const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
 
     const currentWeek = useSelector(selectCurrentWeek);
+    const currentMesocycle = useSelector(selectCurrentMesocycle);
+    const { deleteSetLoading, updateSetLoading, updateStatusLoading } = useSelector((state) => state.mesocycles.loadingElements);
 
     const [invalidFields, setInvalidFields] = useState({
         weight: false,
@@ -19,12 +22,13 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
         const { name, value } = e.target;
 
         if (set.isDone) {
-            dispatch(changeSet({
-                name: 'isDone',
-                value: false,
-                exerciseId,
-                setId,
-            }));
+            return
+            // dispatch(changeSet({
+            //     name: 'isDone',
+            //     value: false,
+            //     exerciseId,
+            //     setId,
+            // }));
         }
 
         // Update invalid state
@@ -42,7 +46,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
     };
 
     const checkboxChangeSet = (e, setId) => {
-        const { name, checked } = e.target;
+        const { checked } = e.target;
 
         // Check if required fields are empty
         if (checked && (set.weight === '' || set.reps === '')) {
@@ -58,12 +62,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
             reps: false,
         });
 
-        dispatch(changeSet({
-            name,
-            value: checked,
-            exerciseId,
-            setId,
-        }));
+        dispatch(updateSetThunk({id: currentMesocycle._id, exerciseId, set, isDone: checked}));
     };
 
     const handleChangeSetType = (type, setId) => {
@@ -76,14 +75,12 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
     };
 
     const handleDeleteSet = (setId) => {
-        dispatch(deleteSet({
-            exerciseId,
-            setId,
-        }));
+        dispatch(deleteSetThunk({id: currentMesocycle._id, exerciseId, setId}));
     };
 
     const handleAddSetBelow = (setId) => {
-        dispatch(addSetBelow({
+        dispatch(addSetThunk({
+            id: currentMesocycle._id,
             exerciseId,
             setId,
         }));
@@ -92,7 +89,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
     return (
         <div className="row font-size-secondary g-0 text-center align-items-center mb-2">
             <div className="col-1 d-flex justify-content-center">
-                <OptionsMenu
+                {(deleteSetLoading !== set._id && updateSetLoading !== set._id) && <OptionsMenu
                     options={[
                         {
                             label: 'Копировать снизу',
@@ -121,7 +118,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                     ]}
                     direction="left"
                     header="Подход"
-                />
+                />}
             </div>
             <div className="col-1"></div>
             <div className="col-3">
@@ -130,6 +127,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                     id="weight"
                     name="weight"
                     value={set.weight}
+                    disabled={updateSetLoading === set._id}
                     onChange={(e) => handleChangeSet(e, set._id)}
                     className={`form-control input-custom text-light text-center rounded-0 ${
                         invalidFields.weight ? 'is-invalid' : ''
@@ -146,6 +144,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                         id="reps"
                         name="reps"
                         value={set.reps}
+                        disabled={updateSetLoading === set._id}
                         onChange={(e) => handleChangeSet(e, set._id)}
                         className={`form-control input-custom text-light text-center rounded-0 ${
                             invalidFields.reps ? 'is-invalid' : ''
@@ -157,13 +156,16 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                     {set.type === 'myorepsMatch' && <InputSetType label="MM" />}
                 </div>
             </div>
-            <div className="col-1"></div>
+            <div className="col-1">
+                {(deleteSetLoading === set._id || updateSetLoading === set._id) && <SpinnerSmall />}
+            </div>
             <div className="col-1">
                 <input
                     type="checkbox"
                     id="isDone"
                     name="isDone"
                     checked={set.isDone}
+                    disabled={updateSetLoading === set._id || updateStatusLoading}
                     onChange={(e) => checkboxChangeSet(e, set._id)}
                     className="form-check-input text-light text-center rounded-0"
                 />

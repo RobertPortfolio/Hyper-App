@@ -1,6 +1,6 @@
 
-import { createSlice, createAsyncThunk, createSelector  } from '@reduxjs/toolkit';
-import { getMesocycles, addMesocycle, updateMesocycle, deleteMesocycle, changeCurrentMesocycle, changeCurrentDay, deleteExerciseFromCurrentDay, addExerciseToCurrentDay, replaceExerciseInCurrentDay, moveExerciseInCurrentDay } from '../../services/hyper-app-service';
+import { createSlice, createAsyncThunk, createSelector, createListenerMiddleware, isAnyOf   } from '@reduxjs/toolkit';
+import { getMesocycles, addMesocycle, updateMesocycle, deleteMesocycle, changeCurrentMesocycle, changeCurrentDay, deleteExerciseFromCurrentDay, addExerciseToCurrentDay, replaceExerciseInCurrentDay, moveExerciseInCurrentDay, deleteSet, addSet, updateSet, applyNotesToExercisesInMesocycle, updateStatus } from '../../services/hyper-app-service';
 
 export const getMesocyclesThunk = createAsyncThunk(
     'data/getMesocycles',
@@ -115,6 +115,90 @@ export const moveExerciseThunk = createAsyncThunk(
   }
 )
 
+export const deleteSetThunk = createAsyncThunk(
+  'data/deleteSet',
+  async ({ id, exerciseId, setId }, { rejectWithValue }) => {
+    try {
+      return await deleteSet(id, exerciseId, setId);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+export const addSetThunk = createAsyncThunk(
+  'data/addSet',
+  async ({ id, exerciseId, setId }, { rejectWithValue }) => {
+    try {
+      return await addSet(id, exerciseId, setId);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+export const updateSetThunk = createAsyncThunk(
+  'data/updateSet',
+  async ({ id, exerciseId, set, isDone }, { rejectWithValue }) => {
+    try {
+      return await updateSet(id, exerciseId, set, isDone);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+export const applyNotesToExercisesInMesocycleThunk = createAsyncThunk(
+  'data/applyNotesToExercisesInMesocycle',
+  async ({ id, exerciseId, notes }, { rejectWithValue }) => {
+    try {
+      return await applyNotesToExercisesInMesocycle(id, exerciseId, notes);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+export const updateStatusThunk = createAsyncThunk(
+  'data/updateStatus',
+  async ({ id, dayId, isDone }, { rejectWithValue }) => {
+    try {
+      return await updateStatus(id, dayId, isDone);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+// listener
+
+export const listenerMiddleware = createListenerMiddleware();
+
+listenerMiddleware.startListening({
+  matcher: isAnyOf(
+    deleteExerciseThunk.fulfilled,
+    addExerciseThunk.fulfilled,
+    replaceExerciseThunk.fulfilled,
+    deleteSetThunk.fulfilled,
+    addSetThunk.fulfilled,
+    updateSetThunk.fulfilled
+  ),
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState();
+    const day = getCurrentDay(state.mesocycles.mesocycles);
+    const mesocycle = findCurrentMesocycle(state.mesocycles.mesocycles);
+
+    // Проверяем, завершен ли день
+    if (day && day.exercises.every(ex => ex.sets.every(set => set.isDone))) {
+      if (!day.isDone) { // Отправляем на сервер только если статус изменился
+        await listenerApi.dispatch(updateStatusThunk({ id: mesocycle._id, dayId: day._id, isDone: true }));
+      }
+    } else if (day?.isDone) {
+      await listenerApi.dispatch(updateStatusThunk({ id: mesocycle._id, dayId: day._id, isDone: false }));
+    }
+  },
+});
+
 // селекторы: 
 export const selectCurrentMesocycle = createSelector(
   [(state) => state.mesocycles.mesocycles],
@@ -145,22 +229,6 @@ export const selectCurrentWeek = createSelector(
 
 // Функции
 
-// Генерация ObjectId для MongoDB
-const generateMongoObjectId = () => 
-  [...Array(2)].map(() => Math.random().toString(16).slice(2, 8)).join('').padStart(24, '0');
-
-// Получение текущей даты в формате "дек 19, 2025"
-const getDate = () => new Date().toLocaleDateString('ru-RU', { month: 'short', day: 'numeric', year: 'numeric' });
-
-// Создание пустого подхода (сета)
-const getEmptySet = (weight = '', type = 'straight') => ({
-  weight,
-  reps: '',
-  type,
-  isDone: false,
-  _id: generateMongoObjectId(),
-});
-
 // Получение текущего мезоцикла
 const findCurrentMesocycle = (mesocycles) => mesocycles.find(meso => meso.isCurrent) || null;
 
@@ -176,40 +244,6 @@ const getDayById = (mesocycles, dayId) => {
   return mesocycle ? mesocycle.weeks.flatMap(week => week.days).find(day => day._id === dayId) || null : null;
 };
 
-// Проверка, завершены ли все подходы в упражнении
-const isExerciseDone = (exercise) => exercise.sets.every(set => set.isDone);
-
-// Проверка, завершены ли все упражнения в дне
-const areAllExercisesDone = (day) => day.exercises.every(isExerciseDone);
-
-// Проверка, завершены ли все упражнения в дне и установка флага
-const markDayIfDone = (day) => {
-  if (day) {
-    if (areAllExercisesDone(day)) {
-      // Все упражнения завершены, помечаем день как завершённый
-      markDayAsDone(day);
-    } else {
-      // Не все упражнения завершены, помечаем день как не завершённый
-      markDayAsNotDone(day);
-    }
-  }
-};
-
-// Отметка дня как завершенного
-const markDayAsDone = (day) => {
-  if (day) {
-    day.isDone = true;
-    day.endDate = getDate();
-  }
-};
-
-// Сброс отметки дня как завершенного
-const markDayAsNotDone = (day) => {
-  if (day) {
-    day.isDone = false;
-    day.endDate = '';
-  }
-};
 
 // Начальное состояние
 const initialState = {
@@ -222,6 +256,11 @@ const initialState = {
     addExerciseLoading: false,
     replaceExerciseLoading: null,
     moveExerciseLoading: null,
+    deleteSetLoading: null,
+    addSetLoading: null,
+    updateSetLoading: null,
+    applyNotesLoading: null,
+    updateStatusLoading: false,
   },
 };
 
@@ -230,74 +269,12 @@ const mesocyclesSlice = createSlice({
     name: 'mesocycles',
     initialState,
     reducers: {
-      
-      // проверка завершен ли мезоцикл
-      updateMesocycleStatus(state) {
-        const mesocycle = findCurrentMesocycle(state.mesocycles);
-        if (mesocycle) {
-          mesocycle.isDone = mesocycle.weeks.every(week => week.days.every(day => day.isDone));
-          if (mesocycle.isDone) mesocycle.endDate = getDate();
-        }
-      },
-
-      
-  
       changeSet(state, action) {
         const { name, value, exerciseId, setId } = action.payload;
         const day = getCurrentDay(state.mesocycles);
         const exercise = day.exercises.find(ex => ex._id === exerciseId);
         const set = exercise?.sets.find(set => set._id === setId);
         if (set) set[name] = value;
-        markDayIfDone(day);
-        mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
-      },
-  
-      deleteSet(state, action) {
-        const { exerciseId, setId } = action.payload;
-        const day = getCurrentDay(state.mesocycles);
-        const exercise = day.exercises.find(ex => ex._id === exerciseId);
-        if (exercise) exercise.sets = exercise.sets.filter(set => set._id !== setId);
-        markDayIfDone(day);
-        mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
-      },
-  
-      addSet(state, action) {
-        const { exerciseId } = action.payload;
-        const day = getCurrentDay(state.mesocycles);
-        const exercise = day.exercises.find(ex => ex._id === exerciseId);
-        if (exercise) exercise.sets.push(getEmptySet());
-        markDayIfDone(day);
-        mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
-
-      },
-
-      addSetBelow(state, action) {
-        const { exerciseId, setId } = action.payload;
-        const day = getCurrentDay(state.mesocycles);
-        const exercise = day.exercises.find(exercise => exercise._id === exerciseId);
-    
-        if (exercise) {
-            const prevSet = exercise.sets.find(set => set._id === setId);
-            if (prevSet) {
-                const newSet = getEmptySet(prevSet.weight, prevSet.type);
-                const index = exercise.sets.indexOf(prevSet);
-                exercise.sets.splice(index + 1, 0, newSet);
-            }
-        }
-
-        markDayIfDone(day);
-        mesocyclesSlice.caseReducers.updateMesocycleStatus(state);
-      },
-  
-      applyNotesToExercisesInCurrentMesocycle(state, action) {
-        const { exerciseId, notes } = action.payload;
-        const mesocycle = findCurrentMesocycle(state.mesocycles);
-        mesocycle?.weeks.forEach(week =>
-          week.days.forEach(day => {
-            const exercise = day.exercises.find(ex => ex.exerciseId === exerciseId);
-            if (exercise) exercise.notes = notes;
-          })
-        );
       },
     },
     extraReducers: (builder) => {
@@ -482,19 +459,115 @@ const mesocyclesSlice = createSlice({
           state.loadingElements.moveExerciseLoading = null;
           state.error = action.payload;
         });
+      // Обработка deleteSetThunk
+      builder
+        .addCase(deleteSetThunk.pending, (state, action) => {
+          state.loadingElements.deleteSetLoading = action.meta.arg.setId;
+        })
+        .addCase(deleteSetThunk.fulfilled, (state, action) => {
+          state.loadingElements.deleteSetLoading = null;
+          
+          const { exerciseId, setId } = action.meta.arg;
+          const day = getCurrentDay(state.mesocycles);
+          const exercise = day.exercises.find(ex => ex._id === exerciseId);
+          if (exercise) exercise.sets = exercise.sets.filter(set => set._id !== setId);
+        })
+        .addCase(deleteSetThunk.rejected, (state, action) => {
+          state.loadingElements.deleteSetLoading = null;
+          state.error = action.payload;
+        });
+      // Обработка addSetThunk
+      builder
+        .addCase(addSetThunk.pending, (state, action) => {
+          state.loadingElements.addSetLoading = action.meta.arg.exerciseId;
+        })
+        .addCase(addSetThunk.fulfilled, (state, action) => {
+          state.loadingElements.addSetLoading = null;
+          const { exerciseId, setId } = action.meta.arg;
+          const day = getCurrentDay(state.mesocycles);
+          const exercise = day.exercises.find(ex => ex._id === exerciseId);
+          if(setId) {
+            const prevSet = exercise.sets.find(set => set._id === setId);
+            const index = exercise.sets.indexOf(prevSet);
+            exercise.sets.splice(index + 1, 0, action.payload.newSet);
+          } else {
+            exercise.sets.push(action.payload.newSet)
+          }
+        })
+        .addCase(addSetThunk.rejected, (state, action) => {
+          state.loadingElements.addSetLoading = null;
+          state.error = action.payload;
+        });
+      // Обработка updateSetThunk
+      builder
+        .addCase(updateSetThunk.pending, (state, action) => {
+          state.loadingElements.updateSetLoading = action.meta.arg.set._id;
+        })
+        .addCase(updateSetThunk.fulfilled, (state, action) => {
+          state.loadingElements.updateSetLoading = null;
+          const { exerciseId, set, isDone } = action.meta.arg;
+          const day = getCurrentDay(state.mesocycles);
+          const exercise = day.exercises.find(ex => ex._id === exerciseId);
+          
+          if (exercise) {
+            // Найдём индекс подхода (set) по его _id
+            const setIndex = exercise.sets.findIndex(s => s._id === set._id);
+            if (setIndex !== -1) {
+              // Обновляем подход, включая флаг isDone
+              exercise.sets[setIndex].isDone = isDone;
+            }
+          }
+          
+        })
+        .addCase(updateSetThunk.rejected, (state, action) => {
+          state.loadingElements.updateSetLoading = null;
+          state.error = action.payload;
+        });
+
+      // Обработка applyNotesToExercisesInMesocycleThunk
+      builder
+        .addCase(applyNotesToExercisesInMesocycleThunk.pending, (state, action) => {
+          state.loadingElements.applyNotesLoading = action.meta.arg.exerciseId;
+        })
+        .addCase(applyNotesToExercisesInMesocycleThunk.fulfilled, (state, action) => {
+          state.loadingElements.applyNotesLoading = null;
+
+          const { exerciseId, notes } = action.meta.arg;
+          const mesocycle = findCurrentMesocycle(state.mesocycles);
+          mesocycle?.weeks.forEach(week =>
+            week.days.forEach(day => {
+              const exercise = day.exercises.find(ex => ex.exerciseId === exerciseId);
+              if (exercise) exercise.notes = notes;
+            })
+          );
+        })
+        .addCase(applyNotesToExercisesInMesocycleThunk.rejected, (state, action) => {
+          state.loadingElements.applyNotesLoading = null;
+          state.error = action.payload;
+        });
+
+      // Обработка updateStatusThunk
+      builder
+        .addCase(updateStatusThunk.pending, (state, action) => {
+          state.loadingElements.updateStatusLoading = true;
+        })
+        .addCase(updateStatusThunk.fulfilled, (state, action) => {
+          state.loadingElements.updateStatusLoading = false;
+          const day = getDayById(state.mesocycles, action.meta.arg.dayId);
+          day.isDone = action.payload.dayIsDone;
+          const mesocycle = findCurrentMesocycle(state.mesocycles);
+          mesocycle.isDone = action.payload.mesocycleIsDone
+        })
+        .addCase(updateStatusThunk.rejected, (state, action) => {
+          state.loadingElements.updateStatusLoading = false;
+          state.error = action.payload;
+        });
+
     },
   });
 
   export const { 
-    setCurrentDayId, 
-    replaceExercise,
-    moveUpExercise,
-    moveDownExercise,
     changeSet, 
-    addSet, 
-    addSetBelow,
-    deleteSet, 
-    applyNotesToExercisesInCurrentMesocycle 
   } = mesocyclesSlice.actions;
   
   export default mesocyclesSlice.reducer;

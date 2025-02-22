@@ -384,3 +384,108 @@ export const moveExerciseInCurrentDay = async (id, exerciseId, direction) => {
         throw error;
     }
 }
+
+export const deleteSet = async (id, exerciseId, setId) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/delete-set/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId, setId }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete set');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error deleting set:', error.message);
+        throw error;
+    }
+}
+
+export const addSet = async (id, exerciseId, setId) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/add-set/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId, setId }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add set');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error adding set:', error.message);
+        throw error;
+    }
+}
+
+export const updateSet = async (id, exerciseId, set, isDone) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/update-set/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId, set, isDone }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update set');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating set:', error.message);
+        throw error;
+    }
+}
+
+export const applyNotesToExercisesInMesocycle = async (id, exerciseId, notes) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/apply-notes/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ exerciseId, notes }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to apply notes');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error apllying notes:', error.message);
+        throw error;
+    }
+}
+
+export const updateStatus = async (id, dayId, isDone) => {
+    try {
+        const response = await fetch(`${_URL}/mesocycles/update-status/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dayId, isDone }), // Преобразуем объект в строку
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update status');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating status:', error.message);
+        throw error;
+    }
+}
