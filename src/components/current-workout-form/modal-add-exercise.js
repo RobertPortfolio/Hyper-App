@@ -15,7 +15,7 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
     const currentMesocycle = useSelector(selectCurrentMesocycle);
 
     const [ muscleGroup, setMuscleGroup ] = useState(null);
-
+    
     const handleAddExercise = (exerciseId) => { 
         dispatch(addExerciseThunk({
             id: currentMesocycle._id,
@@ -23,6 +23,7 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
             exerciseId,
             notes: exercises.find((exerciseItem) => exerciseItem._id === exerciseId)?.notes ?? '',
         }));
+        setMuscleGroup(null);
         setIsOpenNewExerciseForm(false);
     }
 

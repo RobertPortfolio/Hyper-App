@@ -14,6 +14,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
     const [invalidFields, setInvalidFields] = useState({
         weight: false,
         reps: false,
+        isDone: false,
     });
 
     const dispatch = useDispatch();
@@ -22,13 +23,10 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
         const { name, value } = e.target;
 
         if (set.isDone) {
+            setInvalidFields({
+                isDone: set.isDone,
+            });
             return
-            // dispatch(changeSet({
-            //     name: 'isDone',
-            //     value: false,
-            //     exerciseId,
-            //     setId,
-            // }));
         }
 
         // Update invalid state
@@ -45,7 +43,7 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
         }));
     };
 
-    const checkboxChangeSet = (e, setId) => {
+    const checkboxChangeSet = (e) => {
         const { checked } = e.target;
 
         // Check if required fields are empty
@@ -60,17 +58,18 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
         setInvalidFields({
             weight: false,
             reps: false,
+            isDone: false,
         });
 
         dispatch(updateSetThunk({id: currentMesocycle._id, exerciseId, set, isDone: checked}));
     };
 
-    const handleChangeSetType = (type, setId) => {
-        dispatch(changeSet({
-            name: 'type',
-            value: type,
-            exerciseId,
-            setId,
+    const handleChangeSetType = (type) => {
+        dispatch(updateSetThunk({
+            id: currentMesocycle._id, 
+            exerciseId, 
+            set: { ...set, type: type }, 
+            isDone: set.isDone
         }));
     };
 
@@ -99,13 +98,13 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                         },
                         {
                             label: 'Myo-Reps',
-                            action: () => handleChangeSetType('myoreps', set._id),
+                            action: () => handleChangeSetType('myoreps'),
                             className: 'text-light',
                             icon: 'fa fa-m',
                         },
                         {
                             label: 'Myo-Reps Match',
-                            action: () => handleChangeSetType('myorepsMatch', set._id),
+                            action: () => handleChangeSetType('myorepsMatch'),
                             className: 'text-light',
                             icon: 'fa fa-exchange-alt',
                         },
@@ -166,11 +165,12 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
                     name="isDone"
                     checked={set.isDone}
                     disabled={updateSetLoading === set._id || updateStatusLoading}
-                    onChange={(e) => checkboxChangeSet(e, set._id)}
+                    onChange={checkboxChangeSet}
                     className="form-check-input text-light text-center rounded-0"
                 />
             </div>
-            <div className="col-1"></div>
+            <div className="col-1 text-center"></div>
+            {invalidFields.isDone && <div className='font-size-tertiary text-secondary mt-1'>Для внесения изменений снимите отметку "выполнено"</div>}
         </div>
     );
 };

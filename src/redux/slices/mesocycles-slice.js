@@ -514,6 +514,7 @@ const mesocyclesSlice = createSlice({
             const setIndex = exercise.sets.findIndex(s => s._id === set._id);
             if (setIndex !== -1) {
               // Обновляем подход, включая флаг isDone
+              exercise.sets[setIndex] = set;
               exercise.sets[setIndex].isDone = isDone;
             }
           }
@@ -555,8 +556,10 @@ const mesocyclesSlice = createSlice({
           state.loadingElements.updateStatusLoading = false;
           const day = getDayById(state.mesocycles, action.meta.arg.dayId);
           day.isDone = action.payload.dayIsDone;
+          if (action.payload.dayIsDone) day.endDate = action.payload.endDate;
           const mesocycle = findCurrentMesocycle(state.mesocycles);
-          mesocycle.isDone = action.payload.mesocycleIsDone
+          mesocycle.isDone = action.payload.mesocycleIsDone;
+          if (action.payload.mesocycleIsDone) mesocycle.endDate = action.payload.endDate;
         })
         .addCase(updateStatusThunk.rejected, (state, action) => {
           state.loadingElements.updateStatusLoading = false;

@@ -9,7 +9,6 @@ import { selectCurrentMesocycle, selectCurrentDay, selectCurrentWeek, changeCurr
 import Calendar from '../calendar/calendar';
 import OptionsMenu from '../options-menu';
 import ModalAddExercise from './modal-add-exercise';
-import TooltipExplanation from '../tooltip-explanation';
 import ErrorToast from '../error-toast';
 import SpinnerSmall from '../spinner-small';
 import './current-workout-form.css';
@@ -77,20 +76,14 @@ const CurrentWorkoutForm = () => {
     return (
         <div>
             <div className={`sticky-element bg-component p-3 border-bottom ${currentDay.isDone ? 'border-success border-2':'border-secondary'}`}>
-                <div className='d-flex justify-content-between align-items-center mb-3'>
-                    <div>
-                        {currentMesocycle.name && <span className='text-secondary'>
-                            {currentMesocycle.name}
-                        </span>}
-                        {currentMesocycle.isDone && 
-                            <span className='fas fa-check-circle text-success ms-1'></span>
-                        }
-                    </div>
-                    <div className='d-flex align-items-center'>
-                        
-                    </div>
-                    
-                    
+                
+                <div className='mb-2'>
+                    {currentMesocycle.name && <span className='text-secondary'>
+                        {currentMesocycle.name}
+                    </span>}
+                    {currentMesocycle.isDone && 
+                        <span className='fas fa-check-circle text-success ms-1'></span>
+                    }
                 </div>
                 
                 <div className='d-flex justify-content-between align-items-center'>
@@ -113,7 +106,12 @@ const CurrentWorkoutForm = () => {
                                         className: 'text-light',
                                         icon: 'fa fa-add',
                                     },
-                                    {
+                                    openCalendar ? {
+                                        label: 'Закрыть календарь',
+                                        action: () => setOpenCalendar(false),
+                                        className: 'text-light',
+                                        icon: 'fa fa-calendar',
+                                    } : {
                                         label: 'Открыть календарь',
                                         action: () => setOpenCalendar(true),
                                         className: 'text-light',
