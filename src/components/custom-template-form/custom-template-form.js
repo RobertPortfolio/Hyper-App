@@ -21,7 +21,7 @@ const CustomTemplateForm = () => {
         emphasis: '',
         daysPerWeek: 1,
         sex: '',
-        isCustom: false,
+        isCustom: true,
         authorId: '',
         days: [ getEmptyDay() ],
     });
@@ -75,8 +75,8 @@ const CustomTemplateForm = () => {
     const handleSubmit = async () => {
         const updatedTemplateData = {
             ...templateData,
-            //authorId: user._id,
-            authorId: '1',
+            authorId: user._id,
+            //authorId: '1',
         };
         
         await dispatch(postTemplateThunk(updatedTemplateData));
