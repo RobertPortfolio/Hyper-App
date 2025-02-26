@@ -12,7 +12,7 @@ const Calendar = () => {
     const dispatch = useDispatch();
 
     const handleChangeCurrentDay = (dayId) => {
-        dispatch(changeCurrentDayThunk({id: currentMesocycle._id, dayId }));
+        dispatch(changeCurrentDayThunk({mesocycleId: currentMesocycle._id, dayId }));
     };
 
     return (

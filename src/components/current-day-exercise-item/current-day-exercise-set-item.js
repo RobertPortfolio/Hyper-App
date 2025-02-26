@@ -61,12 +61,12 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
             isDone: false,
         });
 
-        dispatch(updateSetThunk({id: currentMesocycle._id, exerciseId, set, isDone: checked}));
+        dispatch(updateSetThunk({mesocycleId: currentMesocycle._id, exerciseId, set, isDone: checked}));
     };
 
     const handleChangeSetType = (type) => {
         dispatch(updateSetThunk({
-            id: currentMesocycle._id, 
+            mesocycleId: currentMesocycle._id, 
             exerciseId, 
             set: { ...set, type: type }, 
             isDone: set.isDone
@@ -74,12 +74,12 @@ const CurrentDayExerciseSetItem = ({ exerciseId, set }) => {
     };
 
     const handleDeleteSet = (setId) => {
-        dispatch(deleteSetThunk({id: currentMesocycle._id, exerciseId, setId}));
+        dispatch(deleteSetThunk({mesocycleId: currentMesocycle._id, exerciseId, setId}));
     };
 
     const handleAddSetBelow = (setId) => {
         dispatch(addSetThunk({
-            id: currentMesocycle._id,
+            mesocycleId: currentMesocycle._id,
             exerciseId,
             setId,
         }));

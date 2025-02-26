@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { register, login, logout, fetchCurrentUser } from '../../services/hyper-app-service';
+import { register, login, logout, fetchCurrentUser } from '../../services/user-service';
 
 // Асинхронные действия
 export const registerUser = createAsyncThunk('user/register', async (userData, { rejectWithValue }) => {

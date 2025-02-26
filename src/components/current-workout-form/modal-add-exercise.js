@@ -18,7 +18,7 @@ const ModalAddExercise = ( {isOpenNewExerciseForm, setIsOpenNewExerciseForm }) =
     
     const handleAddExercise = (exerciseId) => { 
         dispatch(addExerciseThunk({
-            id: currentMesocycle._id,
+            mesocycleId: currentMesocycle._id,
             targetMuscleGroupId: String(muscleGroup),
             exerciseId,
             notes: exercises.find((exerciseItem) => exerciseItem._id === exerciseId)?.notes ?? '',

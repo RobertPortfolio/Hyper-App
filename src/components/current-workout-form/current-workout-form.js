@@ -46,14 +46,14 @@ const CurrentWorkoutForm = () => {
         if (currentDayIndex < currentWeek.days.length - 1) {
             // Если есть, переходим к следующему дню
             const nextDayId = currentWeek.days[currentDayIndex + 1]._id;
-            dispatch(changeCurrentDayThunk({id: currentMesocycle._id, dayId: nextDayId}));
+            dispatch(changeCurrentDayThunk({mesocycleId: currentMesocycle._id, dayId: nextDayId}));
         } else {
             // Если текущая неделя завершена, проверяем, есть ли следующая неделя
             if (currentWeek.number < currentMesocycle.weeks.length) {
                 const nextWeek = currentMesocycle.weeks[currentWeek.number];
                 // Переходим на первый день следующей недели
                 const nextDayId = nextWeek.days[0]._id;
-                dispatch(changeCurrentDayThunk({id: currentMesocycle._id, dayId: nextDayId}));
+                dispatch(changeCurrentDayThunk({mesocycleId: currentMesocycle._id, dayId: nextDayId}));
             } else {
                 // Если недели закончились
                 setErrorInfo('Текущий день последний в мезоцикле');

@@ -40,7 +40,7 @@ const App = () => {
         if (user && user._id) {
             dispatch(getExercisesThunk(user._id));
             dispatch(getTemplatesThunk(user._id));
-            dispatch(getMesocyclesThunk(user._id));
+            dispatch(getMesocyclesThunk({ userId: user._id }));
         }
     }, [user, dispatch]);
 

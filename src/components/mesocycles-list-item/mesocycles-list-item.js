@@ -14,12 +14,12 @@ const MesocyclesListItem = ({ mesocycle }) => {
     const [ statisticIsOpen, setStatisticIsOpen ] = useState(false);
 
     const handleDeleteMesocycle = () => {
-        dispatch(deleteMesocycleThunk(mesocycle._id))
+        dispatch(deleteMesocycleThunk({ mesocycleId: mesocycle._id }))
     } 
 
     const changeCurrentMesocycle = () => {
         dispatch(changeCurrentMesocycleThunk({
-            id: mesocycle._id, 
+            mesocycleId: mesocycle._id, 
             userId: user._id}
         ))
     }

@@ -1,174 +1,87 @@
 
 import { createSlice, createAsyncThunk, createSelector, createListenerMiddleware, isAnyOf   } from '@reduxjs/toolkit';
-import { getMesocycles, addMesocycle, updateMesocycle, deleteMesocycle, changeCurrentMesocycle, changeCurrentDay, deleteExerciseFromCurrentDay, addExerciseToCurrentDay, replaceExerciseInCurrentDay, moveExerciseInCurrentDay, deleteSet, addSet, updateSet, applyNotesToExercisesInMesocycle, updateStatus } from '../../services/hyper-app-service';
+import { getMesocycles, addMesocycle, deleteMesocycle, changeCurrentMesocycle, changeCurrentDay, deleteExerciseFromCurrentDay, addExerciseToCurrentDay, replaceExerciseInCurrentDay, moveExerciseInCurrentDay, deleteSet, addSet, updateSet, applyNotesToExercisesInMesocycle, updateStatus } from '../../services/mesocycles-service';
 
-export const getMesocyclesThunk = createAsyncThunk(
-    'data/getMesocycles',
-    async (userId, { rejectWithValue }) => {
-      try {
-        return await getMesocycles(userId);
-      } catch (error) {
-        return rejectWithValue(error.message);
-      }
-    }
-  );
-
-  export const postMesocycleThunk = createAsyncThunk(
-    'data/addMesocycle',
-    async (data, { rejectWithValue }) => {
-      try {
-        return await addMesocycle(data);
-      } catch (error) {
-        return rejectWithValue(error.message);
-      }
-    }
-  );
-
-export const updateMesocycleThunk = createAsyncThunk(
-  'data/updateMesocycle',
-  async ({ id }, { getState, rejectWithValue }) => {
-    const state = getState();
-    const mesocycle = state.mesocycles.mesocycles.find(m => m._id === id); // Берём из актуального состояния
-
+const createThunk = (type, asyncFunc) =>
+  createAsyncThunk(type, async (args, { rejectWithValue }) => {
     try {
-      return await updateMesocycle(id, mesocycle);
+      return await asyncFunc(args);
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  });
+
+export const getMesocyclesThunk = createThunk(
+  'data/getMesocycles',
+  ({ userId }) => getMesocycles(userId)
 );
 
-export const deleteMesocycleThunk = createAsyncThunk(
+export const postMesocycleThunk = createThunk(
+  'data/addMesocycle',
+  (data) => addMesocycle(data)
+);
+
+export const deleteMesocycleThunk = createThunk(
   'data/deleteMesocycle',
-  async (id, { rejectWithValue }) => {
-    try {
-      return await deleteMesocycle(id);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
+  ({ mesocycleId }) => deleteMesocycle(mesocycleId)
 );
 
-export const changeCurrentMesocycleThunk = createAsyncThunk(
+export const changeCurrentMesocycleThunk = createThunk(
   'data/changeCurrentMesocycle',
-  async ({ id, userId }, { rejectWithValue }) => {
-    try {
-      return await changeCurrentMesocycle(id, userId);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, userId }) => changeCurrentMesocycle(mesocycleId, userId)
+);
 
-export const changeCurrentDayThunk = createAsyncThunk(
+export const changeCurrentDayThunk = createThunk(
   'data/changeCurrentDay',
-  async ({ id, dayId }, { rejectWithValue }) => {
-    try {
-      return await changeCurrentDay(id, dayId);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, dayId }) => changeCurrentDay(mesocycleId, dayId)
+);
 
-export const deleteExerciseThunk = createAsyncThunk(
+export const deleteExerciseThunk = createThunk(
   'data/deleteExerciseFromCurrentDay',
-  async ({ id, exerciseId }, { rejectWithValue }) => {
-    try {
-      return await deleteExerciseFromCurrentDay(id, exerciseId);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId }) => deleteExerciseFromCurrentDay(mesocycleId, exerciseId)
+);
 
-export const addExerciseThunk = createAsyncThunk(
+export const addExerciseThunk = createThunk(
   'data/addExerciseToCurrentDay',
-  async ({ id, targetMuscleGroupId, exerciseId, notes }, { rejectWithValue }) => {
-    try {
-      return await addExerciseToCurrentDay(id, targetMuscleGroupId, exerciseId, notes);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, targetMuscleGroupId, exerciseId, notes }) =>
+    addExerciseToCurrentDay(mesocycleId, targetMuscleGroupId, exerciseId, notes)
+);
 
-export const replaceExerciseThunk = createAsyncThunk(
+export const replaceExerciseThunk = createThunk(
   'data/replaceExerciseInCurrentDay',
-  async ({ id, exerciseId, targetMuscleGroupId, newExerciseId, notes }, { rejectWithValue }) => {
-    try {
-      return await replaceExerciseInCurrentDay(id, exerciseId, targetMuscleGroupId, newExerciseId, notes);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId, targetMuscleGroupId, newExerciseId, notes }) =>
+    replaceExerciseInCurrentDay(mesocycleId, exerciseId, targetMuscleGroupId, newExerciseId, notes)
+);
 
-export const moveExerciseThunk = createAsyncThunk(
+export const moveExerciseThunk = createThunk(
   'data/moveExerciseInCurrentDay',
-  async ({ id, exerciseId, direction }, { rejectWithValue }) => {
-    try {
-      return await moveExerciseInCurrentDay(id, exerciseId, direction);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId, direction }) => moveExerciseInCurrentDay(mesocycleId, exerciseId, direction)
+);
 
-export const deleteSetThunk = createAsyncThunk(
+export const deleteSetThunk = createThunk(
   'data/deleteSet',
-  async ({ id, exerciseId, setId }, { rejectWithValue }) => {
-    try {
-      return await deleteSet(id, exerciseId, setId);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId, setId }) => deleteSet(mesocycleId, exerciseId, setId)
+);
 
-export const addSetThunk = createAsyncThunk(
+export const addSetThunk = createThunk(
   'data/addSet',
-  async ({ id, exerciseId, setId }, { rejectWithValue }) => {
-    try {
-      return await addSet(id, exerciseId, setId);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId, setId }) => addSet(mesocycleId, exerciseId, setId)
+);
 
-export const updateSetThunk = createAsyncThunk(
+export const updateSetThunk = createThunk(
   'data/updateSet',
-  async ({ id, exerciseId, set, isDone }, { rejectWithValue }) => {
-    try {
-      return await updateSet(id, exerciseId, set, isDone);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId, set, isDone }) => updateSet(mesocycleId, exerciseId, set, isDone)
+);
 
-export const applyNotesToExercisesInMesocycleThunk = createAsyncThunk(
+export const applyNotesToExercisesInMesocycleThunk = createThunk(
   'data/applyNotesToExercisesInMesocycle',
-  async ({ id, exerciseId, notes }, { rejectWithValue }) => {
-    try {
-      return await applyNotesToExercisesInMesocycle(id, exerciseId, notes);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, exerciseId, notes }) => applyNotesToExercisesInMesocycle(mesocycleId, exerciseId, notes)
+);
 
-export const updateStatusThunk = createAsyncThunk(
+export const updateStatusThunk = createThunk(
   'data/updateStatus',
-  async ({ id, dayId, isDone }, { rejectWithValue }) => {
-    try {
-      return await updateStatus(id, dayId, isDone);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-)
+  ({ mesocycleId, dayId, isDone }) => updateStatus(mesocycleId, dayId, isDone)
+);
 
 // listener
 
@@ -191,10 +104,10 @@ listenerMiddleware.startListening({
     // Проверяем, завершен ли день
     if (day && day.exercises.every(ex => ex.sets.every(set => set.isDone))) {
       if (!day.isDone) { // Отправляем на сервер только если статус изменился
-        await listenerApi.dispatch(updateStatusThunk({ id: mesocycle._id, dayId: day._id, isDone: true }));
+        await listenerApi.dispatch(updateStatusThunk({ mesocycleId: mesocycle._id, dayId: day._id, isDone: true }));
       }
     } else if (day?.isDone) {
-      await listenerApi.dispatch(updateStatusThunk({ id: mesocycle._id, dayId: day._id, isDone: false }));
+      await listenerApi.dispatch(updateStatusThunk({ mesocycleId: mesocycle._id, dayId: day._id, isDone: false }));
     }
   },
 });
@@ -243,7 +156,6 @@ const getDayById = (mesocycles, dayId) => {
   const mesocycle = findCurrentMesocycle(mesocycles);
   return mesocycle ? mesocycle.weeks.flatMap(week => week.days).find(day => day._id === dayId) || null : null;
 };
-
 
 // Начальное состояние
 const initialState = {
@@ -303,28 +215,6 @@ const mesocyclesSlice = createSlice({
             state.mesocycles = [...state.mesocycles, action.payload]; // Иммутабельное обновление массива
         })
         .addCase(postMesocycleThunk.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.payload;
-        });
-      
-      // Обработка updateMesocycleThunk
-      builder
-        .addCase(updateMesocycleThunk.pending, (state, action) => {
-            state.status = 'loading';
-        })
-        .addCase(updateMesocycleThunk.fulfilled, (state, action) => {
-          state.status = 'succeeded';
-          // Найти индекс обновляемого мезоцикла
-          const index = state.mesocycles.findIndex(
-              (mesocycle) => mesocycle._id === action.payload._id
-          );
-      
-          if (index !== -1) {
-              // Если мезоцикл найден, заменяем его новым
-              state.mesocycles[index] = action.payload;
-          }
-        })
-        .addCase(updateMesocycleThunk.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.payload;
         });

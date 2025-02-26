@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getTemplates, addTemplate, deleteTemplate } from '../../services/hyper-app-service';
+import { getTemplates, addTemplate, deleteTemplate } from '../../services/templates-service';
 
 export const getTemplatesThunk = createAsyncThunk(
     'data/getTemplates',

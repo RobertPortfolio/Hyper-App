@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk, createSelector  } from '@reduxjs/toolkit';
-import { getExercises, addExercise, deleteExercise } from '../../services/hyper-app-service';
+import { getExercises, addExercise, deleteExercise } from '../../services/exercises-serviсe';
 
 export const getExercisesThunk = createAsyncThunk(
   'data/getExercises',

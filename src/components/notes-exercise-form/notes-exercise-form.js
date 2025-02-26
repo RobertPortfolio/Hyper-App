@@ -22,7 +22,7 @@ const NotesExerciseForm = ({ exerciseId, prevNotes, handleCancel }) => {
     setIsSaving(true); // Начало загрузки
     dispatch(
       applyNotesToExercisesInMesocycleThunk({
-        id: currentMesocycle._id,
+        mesocycleId: currentMesocycle._id,
         exerciseId,
         notes,
       }));

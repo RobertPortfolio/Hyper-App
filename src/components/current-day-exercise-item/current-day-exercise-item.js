@@ -37,19 +37,19 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
 
     const handleAddSet = () => {
         dispatch(addSetThunk({ 
-            id: currentMesocycle._id,
+            mesocycleId: currentMesocycle._id,
             exerciseId: exercise._id, 
             setId: null,
         }));
     }
 
     const handleDeleteExercise = () => {
-        dispatch(deleteExerciseThunk({id: currentMesocycle._id, exerciseId: exercise._id}));
+        dispatch(deleteExerciseThunk({mesocycleId: currentMesocycle._id, exerciseId: exercise._id}));
     }
 
     const handleReplaceExercise = (newExerciseId) => {
         dispatch(replaceExerciseThunk({ 
-            id: currentMesocycle._id,
+            mesocycleId: currentMesocycle._id,
             exerciseId: exercise._id, 
             targetMuscleGroupId: exercise.targetMuscleGroupId,
             newExerciseId, 
@@ -62,10 +62,10 @@ const CurrentDayExerciseItem = ({ exercise, previousExerciseTargetMuscleGroupId 
         const index = currentDay.exercises.findIndex(ex => ex._id === exercise._id);
         if (direction === 'up' && index > 0) {
             // Если перемещаем вверх и упражнение не на первой позиции 
-            dispatch(moveExerciseThunk({id: currentMesocycle._id, exerciseId: exercise._id, direction }));
+            dispatch(moveExerciseThunk({mesocycleId: currentMesocycle._id, exerciseId: exercise._id, direction }));
         } else if (direction === 'down' && index < currentDay.exercises.length - 1) {
             // Если перемещаем вниз и упражнение не на последней позиции
-            dispatch(moveExerciseThunk({id: currentMesocycle._id, exerciseId: exercise._id, direction }));
+            dispatch(moveExerciseThunk({mesocycleId: currentMesocycle._id, exerciseId: exercise._id, direction }));
         } else {
             return
         }
