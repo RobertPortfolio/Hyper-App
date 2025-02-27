@@ -8,6 +8,7 @@ export const apiRequest = async (endpoint, method = 'GET', body = null) => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
         };
 
         if (body) {

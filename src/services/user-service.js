@@ -6,66 +6,44 @@ export const register = async (userData) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
+        credentials: 'include', // ✅ Передаёт куки с токеном
     });
+
     if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Ошибка регистрации: ${errorData.error}`);
     }
-    const data = await response.json();
 
-    if (data.token) {
-        localStorage.setItem('token', data.token);
-    }
-    return data;
-}
+    return await response.json(); // ✅ Теперь токен не нужен в ответе, кука уже установлена
+};
 
-// Авторизация пользователя
 export const login = async (credentials) => {
     const response = await fetch(`${_URL}/users/login`, {
         method: 'POST',
-        credentials: 'include',
+        credentials: 'include', // ✅ Куки теперь автоматически передаются
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
     });
+
     if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Ошибка входа: ${errorData.error}`);
     }
-    const data = await response.json();
-    // Сохранение токена в localStorage
-    if (data.token) {
-        localStorage.setItem('token', data.token);
-    }
 
-    return data;
-}
+    return await response.json(); // ✅ Токен не нужен, сервер сам хранит его в куках
+};
 
-// Выход пользователя
 export const logout = async () => {
-    const response = await fetch(`${_URL}/users/logout`, {
+    await fetch(`${_URL}/users/logout`, {
         method: 'POST',
+        credentials: 'include', // ✅ Чтобы кука удалилась на сервере
     });
-    if (!response.ok) {
-        throw new Error('Error during logout');
-    }
-    const data = await response.json();
+};
 
-    // Удаляем токен из localStorage
-    localStorage.removeItem('token');
-    return data;
-}
-
-// Проверка токена
-export const fetchCurrentUser = async (token) => {
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
-
+export const fetchCurrentUser = async () => {
     const response = await fetch(`${_URL}/users/me`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        },
+        credentials: 'include', // ✅ Берёт токен из куки автоматически
     });
 
     if (!response.ok) {
